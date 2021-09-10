@@ -4,10 +4,10 @@ import java.time.Instant;
 import java.util.Set;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.ecom.product.dto.ProductDTO;
-import com.sun.istack.internal.NotNull;
 
 public class OrderDTO {
 
