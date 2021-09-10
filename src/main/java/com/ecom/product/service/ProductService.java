@@ -166,17 +166,21 @@ public class ProductService {
 				|| currentUser.getAuthorities().contains(new SimpleGrantedAuthority(RoleName.ROLE_ADMIN.toString()))
 				|| currentUser.getAuthorities().contains(new SimpleGrantedAuthority(RoleName.ROLE_VENDOR.toString()))) {
 
+			// Fetch the product by ID
 			Product product = productRepository.findById(newProductRequest.getId())
 					.orElseThrow(() -> new ResourceNotFoundException(AppConstant.PRODUCT, AppConstant.ID,
 							newProductRequest.getId()));
-
+			
+			// Fetch the category by product category ID
 			Category category = categoryRepository.findById(newProductRequest.getCategoryId())
 					.orElseThrow(() -> new ResourceNotFoundException(AppConstant.CATEGORY, AppConstant.ID,
 							newProductRequest.getCategoryId()));
-
+			
+			// Get list of old products attributes and remove it from product
 			Set<ProductAttribute> oldProdAttrs = new HashSet<>(productAttributeRepository.findByProduct(product));
 			product.removeAllProdAttributes(oldProdAttrs);
 
+			// Get list of old products photos and remove it from product
 			Set<ProductPhoto> oldProdPhotos = new HashSet<>(productPhotoRepository.findByProduct(product));
 			product.removeAllProdPhotos(oldProdPhotos);
 

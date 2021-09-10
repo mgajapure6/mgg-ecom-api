@@ -3,37 +3,34 @@ package com.ecom.orders.dto;
 import java.time.Instant;
 import java.util.Set;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import com.ecom.product.dto.ProductDTO;
-
-public class OrderDTO {
-
+public class OrderRequestDTO {
 	private Long id;
 
 	@Size(max = 50)
 	private String orderNum;
 
-	@NotBlank
+	@NotNull
 	private Instant orderDate;
 
 	@Size(max = 50)
 	private String orderStatus;
 
 	@NotNull
-	private Set<ProductDTO> products;
+	@Size(min = 1, message = "Order must contain atleast one product")
+	private Set<OrderProductDTO> products;
 
 	@NotNull
 	private Long userId;
 
-	public OrderDTO() {
+	public OrderRequestDTO() {
 		super();
 	}
 
-	public OrderDTO(Long id, @NotBlank @Size(max = 50) String orderNum, @NotBlank Instant orderDate,
-			@NotBlank @Size(max = 50) String orderStatus, Set<ProductDTO> products, Long userId) {
+	public OrderRequestDTO(Long id, String orderNum, Instant orderDate, String orderStatus, Set<OrderProductDTO> products,
+			Long userId) {
 		super();
 		this.id = id;
 		this.orderNum = orderNum;
@@ -75,11 +72,11 @@ public class OrderDTO {
 		this.orderStatus = orderStatus;
 	}
 
-	public Set<ProductDTO> getProducts() {
+	public Set<OrderProductDTO> getProducts() {
 		return products;
 	}
 
-	public void setProducts(Set<ProductDTO> products) {
+	public void setProducts(Set<OrderProductDTO> products) {
 		this.products = products;
 	}
 
@@ -90,5 +87,4 @@ public class OrderDTO {
 	public void setUserId(Long userId) {
 		this.userId = userId;
 	}
-
 }

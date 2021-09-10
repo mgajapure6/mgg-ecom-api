@@ -21,7 +21,8 @@ import com.ecom.app.payload.PagedResponse;
 import com.ecom.app.security.CurrentUser;
 import com.ecom.app.security.UserPrincipal;
 import com.ecom.app.utils.AppConstant;
-import com.ecom.orders.dto.OrderDTO;
+import com.ecom.orders.dto.OrderRequestDTO;
+import com.ecom.orders.dto.OrderResponseDTO;
 import com.ecom.orders.service.OrderService;
 
 @RestController
@@ -33,34 +34,34 @@ public class OrderController {
 
 	@GetMapping
 	@PreAuthorize("hasRole('VENDOR') or hasRole('ADMIN')")
-	public ResponseEntity<PagedResponse<OrderDTO>> getAllOrder(
+	public ResponseEntity<PagedResponse<OrderResponseDTO>> getAllOrder(
 			@RequestParam(value = "page", required = false, defaultValue = AppConstant.DEFAULT_PAGE_NUMBER) Integer page,
 			@RequestParam(value = "size", required = false, defaultValue = AppConstant.DEFAULT_PAGE_SIZE) Integer size) {
-		PagedResponse<OrderDTO> response = orderService.getAllOrder(page, size);
+		PagedResponse<OrderResponseDTO> response = orderService.getAllOrder(page, size);
 
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
 	@PostMapping
 	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-	public ResponseEntity<OrderDTO> addOrder(@Valid @RequestBody OrderDTO orderRequest,
+	public ResponseEntity<OrderResponseDTO> addOrder(@Valid @RequestBody OrderRequestDTO orderRequest,
 			@CurrentUser UserPrincipal currentUser) {
-		OrderDTO orderResponse = orderService.addOrder(orderRequest, currentUser);
+		OrderResponseDTO orderResponse = orderService.addOrder(orderRequest, currentUser);
 		return new ResponseEntity<>(orderResponse, HttpStatus.CREATED);
 	}
 
 	@GetMapping("/{id}")
 	@PreAuthorize("hasRole('VENDOR') or hasRole('ADMIN') or hasRole('USER')")
-	public ResponseEntity<OrderDTO> getOrder(@PathVariable(name = "id") Long id) {
-		OrderDTO order = orderService.getOrder(id);
+	public ResponseEntity<OrderResponseDTO> getOrder(@PathVariable(name = "id") Long id) {
+		OrderResponseDTO order = orderService.getOrder(id);
 		return new ResponseEntity<>(order, HttpStatus.OK);
 	}
 
 	@PutMapping("/{id}")
 	@PreAuthorize("hasRole('VENDOR') or hasRole('ADMIN')")
-	public ResponseEntity<OrderDTO> updateOrder(@PathVariable(name = "id") Long id,
-			@Valid @RequestBody OrderDTO newOrderRequest, @CurrentUser UserPrincipal currentUser) {
-		OrderDTO order = orderService.updateOrder(id, newOrderRequest, currentUser);
+	public ResponseEntity<OrderResponseDTO> updateOrder(@PathVariable(name = "id") Long id,
+			@Valid @RequestBody OrderRequestDTO updateOrderRequest, @CurrentUser UserPrincipal currentUser) {
+		OrderResponseDTO order = orderService.updateOrder(id, updateOrderRequest, currentUser);
 		return new ResponseEntity<>(order, HttpStatus.OK);
 	}
 

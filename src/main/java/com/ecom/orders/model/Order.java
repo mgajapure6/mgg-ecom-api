@@ -13,14 +13,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import com.ecom.product.model.Product;
 import com.ecom.user.model.DateAudit;
 import com.ecom.user.model.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -40,7 +39,7 @@ public class Order extends DateAudit implements Serializable {
 	@Size(max = 50)
 	private String orderNum;
 
-	@NotBlank
+	@NotNull
 	@Column(name = "order_date")
 	private Instant orderDate;
 
@@ -50,9 +49,8 @@ public class Order extends DateAudit implements Serializable {
 	private String orderStatus;
 
 	@JsonIgnore
-	@ManyToMany(cascade = CascadeType.ALL)
-	@JoinTable(name = "order_product", joinColumns = @JoinColumn(name = "order_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "product_id", referencedColumnName = "id"))
-	private Set<Product> products = new HashSet<>();
+	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+	private Set<OrderProduct> products = new HashSet<>();
 
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -63,8 +61,8 @@ public class Order extends DateAudit implements Serializable {
 		super();
 	}
 
-	public Order(Long id, @NotBlank @Size(max = 50) String orderNum, @NotBlank Instant orderDate,
-			@NotBlank @Size(max = 50) String orderStatus, Set<Product> products, User user) {
+	public Order(Long id, @NotBlank @Size(max = 50) String orderNum, @NotNull Instant orderDate,
+			@NotBlank @Size(max = 50) String orderStatus, Set<OrderProduct> products, User user) {
 		super();
 		this.id = id;
 		this.orderNum = orderNum;
@@ -106,11 +104,11 @@ public class Order extends DateAudit implements Serializable {
 		this.orderStatus = orderStatus;
 	}
 
-	public Set<Product> getProducts() {
+	public Set<OrderProduct> getProducts() {
 		return products;
 	}
 
-	public void setProducts(Set<Product> products) {
+	public void setProducts(Set<OrderProduct> products) {
 		this.products = products;
 	}
 
@@ -122,19 +120,21 @@ public class Order extends DateAudit implements Serializable {
 		this.user = user;
 	}
 
-	public Order addProduct(Product product) {
+	
+	
+	public Order addOrderProduct(OrderProduct product) {
 		this.products.add(product);
 		return this;
 	}
 
-	public Order removeProduct(Product product) {
+	public Order removeOrderProduct(OrderProduct product) {
 		this.products.remove(product);
 		return this;
 	}
 
-	public Order removeAllProduct(Set<Product> products) {
+	public Order removeAllOrderProduct(Set<OrderProduct> products) {
 		this.products.removeAll(products);
 		return this;
 	}
-
+	
 }

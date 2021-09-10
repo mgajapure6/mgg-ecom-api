@@ -1,5 +1,7 @@
 package com.ecom.product.repository;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -18,5 +20,7 @@ public interface ProductRepository extends JpaRepository<Product, Long>, CrudRep
 	Page<Product> findByCategoryAndUser(Category category, User user, Pageable pageable);
 
 	Page<Product> findByCreatedBy(Long id, Pageable pageable);
+	
+	List<Product> findByIdIn(List<Long> ids);
 
 }
