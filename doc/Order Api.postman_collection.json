@@ -1,0 +1,67 @@
+{
+	"info": {
+		"_postman_id": "3c6c02dd-eb00-423f-bcfd-cc7f5cacce3a",
+		"name": "Order Api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get Order By ID",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjI3Nzk5MDE4LCJleHAiOjE2Mjc4NDIyMTh9.JbgMnWcLRpg7rEzOXLouxVyusiDV_ftSHhMsVn8IqkwmSnVATjqQOScU3IfC0wYGlxm6fnT2OMLbAXyOGTCWcw",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/order/7",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"order",
+						"7"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Order",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"orderDate\": \"2021-08-01T06:55:28.689Z\",\r\n    \"products\": [\r\n      {\r\n        \"id\": 0,\r\n        \"prodName\": \"string\",\r\n        \"prodDesc\": \"string\",\r\n        \"prodSku\": \"string\",\r\n        \"prodModel\": \"string\",\r\n        \"prodTags\": \"string\",\r\n        \"prodPrice\": 0,\r\n        \"prodSpecialPrice\": 0,\r\n        \"prodQuantity\": 0,\r\n        \"prodAttributes\": [\r\n          {\r\n            \"id\": 0,\r\n            \"name\": \"string\",\r\n            \"value\": \"string\"\r\n          }\r\n        ],\r\n        \"prodPhotos\": [\r\n          {\r\n            \"id\": 0,\r\n            \"title\": \"string\",\r\n            \"url\": \"string\",\r\n            \"thumbnailUrl\": \"string\"\r\n          }\r\n        ],\r\n        \"categoryId\": 0,\r\n        \"userId\": 0\r\n      }\r\n    ],\r\n    \"userId\": 0\r\n  }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/order",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"order"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

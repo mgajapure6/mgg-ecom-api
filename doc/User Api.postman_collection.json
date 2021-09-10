@@ -1,0 +1,97 @@
+{
+	"info": {
+		"_postman_id": "b9ebe3bb-aaab-433e-b172-2beae0293a13",
+		"name": "User Api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"usernameOrEmail\": \"admin\",\r\n\t\"password\": \"admin\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/auth/signin",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"auth",
+						"signin"
+					]
+				},
+				"description": "User sign in or login"
+			},
+			"response": []
+		},
+		{
+			"name": "Get User Profile",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjI3Nzk5MDE4LCJleHAiOjE2Mjc4NDIyMTh9.JbgMnWcLRpg7rEzOXLouxVyusiDV_ftSHhMsVn8IqkwmSnVATjqQOScU3IfC0wYGlxm6fnT2OMLbAXyOGTCWcw",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/api/users/admin/profile",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"users",
+						"admin",
+						"profile"
+					]
+				},
+				"description": "Get user profile"
+			},
+			"response": []
+		},
+		{
+			"name": "Get logged User Detail",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjI3Nzk5MDE4LCJleHAiOjE2Mjc4NDIyMTh9.JbgMnWcLRpg7rEzOXLouxVyusiDV_ftSHhMsVn8IqkwmSnVATjqQOScU3IfC0wYGlxm6fnT2OMLbAXyOGTCWcw",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/api/users/me",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"users",
+						"me"
+					]
+				},
+				"description": "Get my short info"
+			},
+			"response": []
+		}
+	]
+}

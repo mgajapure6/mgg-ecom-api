@@ -1,0 +1,72 @@
+{
+	"info": {
+		"_postman_id": "9bb66cf9-4cd6-445b-83b7-04febdc62b19",
+		"name": "Category",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Add Category",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjI3NzM3ODk3LCJleHAiOjE2Mjc3NDE0OTd9.9UV80n-ukzHDJbD2iq6iEwWddDFc9fhRO8LeXwsJc7VaNndRZEgicETVJ6WSnfQPSFAJprL6Sbojzbyfoy7k-g",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\" : \"Category 1\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/category",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"category"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All CAtegories",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjI3Nzk5MDE4LCJleHAiOjE2Mjc4NDIyMTh9.JbgMnWcLRpg7rEzOXLouxVyusiDV_ftSHhMsVn8IqkwmSnVATjqQOScU3IfC0wYGlxm6fnT2OMLbAXyOGTCWcw",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/category",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"category"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
