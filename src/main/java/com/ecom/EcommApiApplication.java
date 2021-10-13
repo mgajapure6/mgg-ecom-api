@@ -1,5 +1,6 @@
 package com.ecom;
 
+import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TimeZone;
@@ -9,12 +10,14 @@ import javax.annotation.PostConstruct;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.convert.Jsr310Converters;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.ecom.app.exceptions.AppException;
 import com.ecom.app.security.JwtAuthenticationFilter;
@@ -67,6 +70,7 @@ public class EcommApiApplication {
 	@Bean
 	InitializingBean sendDatabase() {
 		return () -> {
+			
 			if (roleRepository.count() == 0) {
 				for (RoleName roleName : RoleName.values()) {
 					Role role = new Role();
