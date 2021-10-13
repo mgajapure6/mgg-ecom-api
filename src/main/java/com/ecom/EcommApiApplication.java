@@ -98,7 +98,18 @@ public class EcommApiApplication {
 			}
 
 			if (categoryRepository.count() == 0) {
-				categoryRepository.save(new Category(null, "cat1"));
+				categoryRepository.save(new Category(null, "Computers"));
+				categoryRepository.save(new Category(null, "Mobiles"));
+				categoryRepository.save(new Category(null, "Men's Fashion"));
+				categoryRepository.save(new Category(null, "Women's Fashion"));
+				categoryRepository.save(new Category(null, "Child Fashion"));
+				categoryRepository.save(new Category(null, "Men's Footware"));
+				categoryRepository.save(new Category(null, "Women's Footware"));
+				categoryRepository.save(new Category(null, "Furniture"));
+				categoryRepository.save(new Category(null, "Home Decor"));
+				categoryRepository.save(new Category(null, "Sports"));
+				categoryRepository.save(new Category(null, "Grocery"));
+				categoryRepository.save(new Category(null, "Books"));
 			}
 
 		};
