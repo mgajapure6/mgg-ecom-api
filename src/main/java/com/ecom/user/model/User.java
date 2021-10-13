@@ -23,6 +23,7 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.NaturalId;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
@@ -73,6 +74,16 @@ public class User extends DateAudit {
 
 	@Column(name = "website")
 	private String website;
+	
+	@Column(name = "active")
+	private Boolean active;
+	
+	@Column(name = "account_verified")
+	private Boolean accountVerified;
+	
+	@Column(name = "verification_code")
+	@JsonIgnore
+	private String acccountVerificationCode;
 
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
@@ -191,5 +202,38 @@ public class User extends DateAudit {
 	public void setCompany(Company company) {
 		this.company = company;
 	}
+
+
+	public Boolean getActive() {
+		return active;
+	}
+
+	public void setActive(Boolean active) {
+		this.active = active;
+	}
+
+
+	public Boolean getAccountVerified() {
+		return accountVerified;
+	}
+
+
+	public void setAccountVerified(Boolean accountVerified) {
+		this.accountVerified = accountVerified;
+	}
+
+
+	public String getAcccountVerificationCode() {
+		return acccountVerificationCode;
+	}
+
+
+	public void setAcccountVerificationCode(String acccountVerificationCode) {
+		this.acccountVerificationCode = acccountVerificationCode;
+	}
+
+
+	
+
 
 }

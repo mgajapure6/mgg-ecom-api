@@ -55,7 +55,7 @@ public class SecutiryConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers(HttpMethod.GET, "/api/**").permitAll().antMatchers(HttpMethod.POST, "/api/auth/**")
 				.permitAll()
 				.antMatchers(HttpMethod.GET, "/api/users/checkUsernameAvailability",
-						"/api/users/checkEmailAvailability")
+						"/api/users/checkEmailAvailability", "/api/users/accVerify")
 				.permitAll().antMatchers(AUTH_WHITELIST).permitAll().anyRequest().authenticated();
 
 		http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

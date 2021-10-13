@@ -24,6 +24,7 @@ import com.ecom.user.payload.InfoRequest;
 import com.ecom.user.payload.UserIdentityAvailability;
 import com.ecom.user.payload.UserProfile;
 import com.ecom.user.payload.UserSummary;
+import com.ecom.user.service.UserAccountVarificationService;
 import com.ecom.user.service.UserService;
 
 @RestController
@@ -31,6 +32,9 @@ import com.ecom.user.service.UserService;
 public class UserController {
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private UserAccountVarificationService userAccountVarificationService;
 
 	@GetMapping("/me")
 	@PreAuthorize("hasRole('USER') or hasRole('VENDOR')")
@@ -62,38 +66,15 @@ public class UserController {
 		return new ResponseEntity<>(userProfile, HttpStatus.OK);
 	}
 
-	// @GetMapping("/{username}/posts")
-	// public ResponseEntity<PagedResponse<Post>>
-	// getPostsCreatedBy(@PathVariable(value = "username") String username,
-	// @RequestParam(value = "page", required = false, defaultValue =
-	// AppConstants.DEFAULT_PAGE_NUMBER) Integer page,
-	// @RequestParam(value = "size", required = false, defaultValue =
-	// AppConstants.DEFAULT_PAGE_SIZE) Integer size) {
-	// PagedResponse<Post> response = postService.getPostsByCreatedBy(username,
-	// page, size);
-	//
-	// return new ResponseEntity< >(response, HttpStatus.OK);
-	// }
-	//
-	// @GetMapping("/{username}/albums")
-	// public ResponseEntity<PagedResponse<Album>>
-	// getUserAlbums(@PathVariable(name = "username") String username,
-	// @RequestParam(name = "page", required = false, defaultValue =
-	// AppConstants.DEFAULT_PAGE_NUMBER) Integer page,
-	// @RequestParam(name = "size", required = false, defaultValue =
-	// AppConstants.DEFAULT_PAGE_SIZE) Integer size) {
-	//
-	// PagedResponse<Album> response = albumService.getUserAlbums(username,
-	// page, size);
-	//
-	// return new ResponseEntity< >(response, HttpStatus.OK);
-	// }
-
+	
 	@PostMapping
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<User> addUser(@Valid @RequestBody User user) {
+		user.setActive(true);
+		user.setAccountVerified(false);
+		user.setAcccountVerificationCode(userAccountVarificationService.getVerificationCode(user));
 		User newUser = userService.addUser(user);
-
+		userAccountVarificationService.sendAccountVerificationEmail(newUser);
 		return new ResponseEntity<>(newUser, HttpStatus.CREATED);
 	}
 
@@ -154,6 +135,13 @@ public class UserController {
 		UserProfile userProfile = userService.setOrUpdateInfo(currentUser, infoRequest);
 
 		return new ResponseEntity<>(userProfile, HttpStatus.OK);
+	}
+	
+	@GetMapping("/accVerify")
+	//@PreAuthorize("hasRole('ADMIN')")
+	public ResponseEntity<String> verifyUserAccount(@RequestParam(name = "code") String code) {
+		userService.verifyUserByAcccountVerificationCode(code);
+		return new ResponseEntity<>("User verified successfully", HttpStatus.OK);
 	}
 
 }

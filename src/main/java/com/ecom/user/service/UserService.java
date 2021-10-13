@@ -35,5 +35,7 @@ public interface UserService {
 	ApiResponse removeVendor(String username);
 
 	UserProfile setOrUpdateInfo(UserPrincipal currentUser, InfoRequest infoRequest);
+	
+	User verifyUserByAcccountVerificationCode(String code);
 
 }

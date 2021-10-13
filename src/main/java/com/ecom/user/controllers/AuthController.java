@@ -1,6 +1,5 @@
 package com.ecom.user.controllers;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.ecom.app.exceptions.AppException;
 import com.ecom.app.exceptions.EcommApiException;
@@ -32,6 +30,7 @@ import com.ecom.user.payload.LoginRequest;
 import com.ecom.user.payload.SignUpRequest;
 import com.ecom.user.repository.RoleRepository;
 import com.ecom.user.repository.UserRepository;
+import com.ecom.user.service.UserAccountVarificationService;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -52,6 +51,9 @@ public class AuthController {
 
 	@Autowired
 	private JwtTokenProvider jwtTokenProvider;
+	
+	@Autowired
+	private UserAccountVarificationService userAccountVarificationService;
 
 	@PostMapping("/signin")
 	public ResponseEntity<JwtAuthenticationResponse> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
@@ -85,6 +87,7 @@ public class AuthController {
 		String password = passwordEncoder.encode(signUpRequest.getPassword());
 
 		User user = new User(firstName, lastName, username, email, password);
+		
 
 		List<Role> roles = new ArrayList<>();
 
@@ -101,12 +104,18 @@ public class AuthController {
 		}
 
 		user.setRoles(roles);
+		
+		user.setActive(true);
+		user.setAccountVerified(false);
+		user.setAcccountVerificationCode(userAccountVarificationService.getVerificationCode(user));
 
-		User result = userRepository.save(user);
+		User newUser = userRepository.save(user);
+		
+		userAccountVarificationService.sendAccountVerificationEmail(newUser);
 
-		URI location = ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/users/{userId}")
-				.buildAndExpand(result.getId()).toUri();
+//		URI location = ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/users/{userId}")
+//				.buildAndExpand(result.getId()).toUri();
 
-		return ResponseEntity.created(location).body(new ApiResponse(Boolean.TRUE, "User registered successfully"));
+		return ResponseEntity.ok().body(new ApiResponse(Boolean.TRUE, "User registered successfully"));
 	}
 }

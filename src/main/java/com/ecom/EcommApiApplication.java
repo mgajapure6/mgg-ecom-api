@@ -25,6 +25,7 @@ import com.ecom.user.model.RoleName;
 import com.ecom.user.model.User;
 import com.ecom.user.repository.RoleRepository;
 import com.ecom.user.repository.UserRepository;
+import com.ecom.user.service.UserAccountVarificationService;
 
 @SpringBootApplication
 @EntityScan(basePackageClasses = { EcommApiApplication.class, Jsr310Converters.class })
@@ -38,6 +39,9 @@ public class EcommApiApplication {
 
 	@Autowired
 	private CategoryRepository categoryRepository;
+	
+	@Autowired
+	private UserAccountVarificationService accountVarificationService;
 
 	private static final String USER_ROLE_NOT_SET = "User role not set";
 
@@ -73,7 +77,7 @@ public class EcommApiApplication {
 
 			if (userRepository.count() == 0) {
 				BCryptPasswordEncoder bcpe = new BCryptPasswordEncoder();
-				User user = new User("Super", "Admin", "admin", "admin@gmail.com", bcpe.encode("admin"));
+				User user = new User("Super", "Admin", "admin", "mgajapure6@gmail.com", bcpe.encode("admin"));
 				List<Role> roles = new ArrayList<>();
 				roles.add(roleRepository.findByName(RoleName.ROLE_USER)
 						.orElseThrow(() -> new AppException(USER_ROLE_NOT_SET)));
@@ -82,7 +86,15 @@ public class EcommApiApplication {
 				roles.add(roleRepository.findByName(RoleName.ROLE_VENDOR)
 						.orElseThrow(() -> new AppException(USER_ROLE_NOT_SET)));
 				user.setRoles(roles);
-				userRepository.save(user);
+				
+				user.setActive(true);
+				user.setAccountVerified(false);
+				user.setAcccountVerificationCode(accountVarificationService.getVerificationCode(user));
+
+				user = userRepository.save(user);
+				
+
+				accountVarificationService.sendAccountVerificationEmail(user);
 			}
 
 			if (categoryRepository.count() == 0) {

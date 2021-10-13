@@ -24,22 +24,25 @@ public class UserPrincipal implements UserDetails {
 
 	private String username;
 
-	@JsonIgnore
+	//@JsonIgnore
 	private String email;
 
 	@JsonIgnore
 	private String password;
+	
+	private Boolean accountVerified;
 
 	private Collection<? extends GrantedAuthority> authorities;
 
 	public UserPrincipal(Long id, String firstName, String lastName, String username, String email, String password,
-			Collection<? extends GrantedAuthority> authorities) {
+			Boolean accountVerified,Collection<? extends GrantedAuthority> authorities) {
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.username = username;
 		this.email = email;
 		this.password = password;
+		this.accountVerified = accountVerified;
 
 		if (authorities == null) {
 			this.authorities = null;
@@ -51,9 +54,11 @@ public class UserPrincipal implements UserDetails {
 	public static UserPrincipal create(User user) {
 		List<GrantedAuthority> authorities = user.getRoles().stream()
 				.map(role -> new SimpleGrantedAuthority(role.getName().name())).collect(Collectors.toList());
+		
+		UserPrincipal up = new UserPrincipal(user.getId(), user.getFirstName(), user.getLastName(), user.getUsername(),
+				user.getEmail(), user.getPassword(), user.getAccountVerified(), authorities);
 
-		return new UserPrincipal(user.getId(), user.getFirstName(), user.getLastName(), user.getUsername(),
-				user.getEmail(), user.getPassword(), authorities);
+		return up;
 	}
 
 	public Long getId() {
@@ -105,6 +110,14 @@ public class UserPrincipal implements UserDetails {
 		this.password = password;
 	}
 
+	public Boolean getAccountVerified() {
+		return accountVerified;
+	}
+
+	public void setAccountVerified(Boolean accountVerified) {
+		this.accountVerified = accountVerified;
+	}
+
 	public void setAuthorities(Collection<? extends GrantedAuthority> authorities) {
 		this.authorities = authorities;
 	}
@@ -126,7 +139,7 @@ public class UserPrincipal implements UserDetails {
 
 	@Override
 	public boolean isEnabled() {
-		return true;
+		return getAccountVerified()==true ? true : false;
 	}
 
 	public boolean equals(Object object) {

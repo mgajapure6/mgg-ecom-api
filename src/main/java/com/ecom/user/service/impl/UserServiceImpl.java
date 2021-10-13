@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.ecom.app.exceptions.AccessDeniedException;
 import com.ecom.app.exceptions.AppException;
 import com.ecom.app.exceptions.BadRequestException;
+import com.ecom.app.exceptions.EcommApiException;
 import com.ecom.app.exceptions.ResourceNotFoundException;
 import com.ecom.app.exceptions.UnauthorizedException;
 import com.ecom.app.payload.ApiResponse;
@@ -226,5 +227,14 @@ public class UserServiceImpl implements UserService {
 		ApiResponse apiResponse = new ApiResponse(Boolean.FALSE, "You don't have permission to update users profile",
 				HttpStatus.FORBIDDEN);
 		throw new AccessDeniedException(apiResponse);
+	}
+
+	@Override
+	public User verifyUserByAcccountVerificationCode(String code) {
+		User user = userRepository.findByAcccountVerificationCode(code)
+				.orElseThrow(() -> new EcommApiException(HttpStatus.NOT_FOUND, "User not found"));
+		user.setAccountVerified(true);
+		user = userRepository.save(user);
+		return user;
 	}
 }
