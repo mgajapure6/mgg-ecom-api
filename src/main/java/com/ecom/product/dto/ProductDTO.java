@@ -45,6 +45,7 @@ public class ProductDTO {
 	@NotNull
 	private Set<ProductPhotoDTO> prodPhotos;
 	
+	@NotNull
 	private List<MultipartFile> imageFiles;
 
 	@NotNull

@@ -71,16 +71,23 @@ a.del-wrap:hover {
 	background: #000;
 	color: red;
 }
+
+#confirm-data td img {
+	width: 100px;
+	height: 100px;
+	object-fit: cover;
+}
+
+table td, table th {
+	vertical-align: inherit !important;
+}
 </style>
 </head>
 <body>
 	<div class="container">
-		<div th:if="${message}">
-			
-		</div>
+		<div th:if="${message}"></div>
 		<div class="card m-5">
 			<h3 class="text-center mb-3 mt-3">Add Product Details</h3>
-			
 			<!-- <div class="alert alert-success mt-4 mb-4" role="alert">
 				<strong>${message}</strong>
 				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -92,30 +99,6 @@ a.del-wrap:hover {
 				<form method="post" th:action="@{/ui/products/uploadImages}" enctype="multipart/form-data" th:object="${productDTO}" id="productForm">
 					<div class="tab tab-1">
 						<h5>Tab 1</h5>
-						<hr />
-						<div class="row">
-							<div class="col">
-								<div class="custom-file">
-									<input type="file" class="custom-file-input" id="imageFile" multiple="multiple" accept="image/*" name="file" th:field="*{imageFiles}">
-									<label class="custom-file-label" for="customFile">Choose Image</label>
-								</div>
-							</div>
-						</div>
-						<hr />
-						<div class="row">
-							<div class="col">
-								<div id="file-preview">
-									<div class="d-flex justify-content-center no-images">
-										<div class="align-self-center">
-											<span class="h3">Image Preview</span><br />
-											<div>
-												<small>Only Images are allowed, max 5 images, up to 1 MB of each image file</small>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
 						<hr />
 						<div class="row">
 							<div class="col-6">
@@ -159,9 +142,35 @@ a.del-wrap:hover {
 							<h5>Add Product Images</h5>
 						</div>
 						<hr />
+						<div class="row">
+							<div class="col">
+								<div class="custom-file">
+									<input type="file" class="custom-file-input" id="imageFile" multiple="multiple" accept="image/*" name="file" th:field="*{imageFiles}">
+									<label class="custom-file-label" for="customFile">Image Files</label>
+								</div>
+							</div>
+						</div>
+						<hr />
+						<div class="row">
+							<div class="col">
+								<div id="file-preview">
+									<div class="d-flex justify-content-center no-images">
+										<div class="align-self-center">
+											<span class="h3">Image Preview</span><br />
+											<div>
+												<small>Only Images are allowed, max 5 images, up to 1 MB of each image file</small>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
 					<div class="tab tab-confirm">
 						<h5>Confirm</h5>
+						<div class="row">
+							<div class="col" id="confirm-data"></div>
+						</div>
 					</div>
 					<hr />
 					<div class="tab-buttons mt-4 mb-4">
@@ -390,6 +399,41 @@ a.del-wrap:hover {
 			tabIndex == 0 ? $(prevBtn).hide() : $(prevBtn).show();
 			allTabs.length - 1 == tabIndex ? $(submitBtn).show() : $(submitBtn).hide();
 			allTabs.length - 1 == tabIndex ? $(nxtBtn).hide() : $(nxtBtn).show();
+			
+			if($(allTabs[tabIndex]).hasClass('tab-confirm')){
+				var table = $('<table class="table"><thead><tr><th>Name</th><th>Values</th></tr></thead><tbody></tbody></table>');
+				$('#productForm').find('.form-group').each(function(i, ele){
+					
+					var tr = $('<tr><td>'+$(ele).find('label').text()+'</td><td>'+$(ele).find('.form-control').val()+'</td></tr>');
+					
+					$(table).append(tr);
+				});
+				
+				if($('#attributeTable tbody tr').length>0){
+					$(table).append('<tr><th colspan="2">Product Attibutes</th></tr>');
+					$('#attributeTable tbody tr').each(function(i,ele){
+						var tr = $('<tr><td>'+$(ele).find('.form-control.name').val()+'</td><td>'+$(ele).find('.form-control.value').val()+'</td></tr>');
+						$(table).append(tr);
+					});
+				}
+				
+				if($('.img-preview').length>0){
+					$(table).append('<tr><th colspan="2">Product Images</th></tr>');
+					var filePrew = $('#file-preview');
+					$(filePrew).find('.img-preview').each(function(i, ip){
+						var imgSrc = $(ip).find('img.img-thumbnail').attr('src');
+						var tr = $('<tr><td><img class="img-thumbnail" src="'+imgSrc+'"></td><td>'+$(ip).find('div.text-center.small').text()+'</td></tr>');
+						$(table).append(tr);
+					});
+					
+					
+				}
+				
+				
+				$('#confirm-data').html(table);
+				
+				
+			}
 		}
 
 		function validateTab(tabIndex) {
