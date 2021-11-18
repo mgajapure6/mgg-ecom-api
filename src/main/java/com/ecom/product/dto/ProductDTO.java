@@ -1,10 +1,13 @@
 package com.ecom.product.dto;
 
+import java.util.List;
 import java.util.Set;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import org.springframework.web.multipart.MultipartFile;
 
 public class ProductDTO {
 
@@ -41,6 +44,8 @@ public class ProductDTO {
 
 	@NotNull
 	private Set<ProductPhotoDTO> prodPhotos;
+	
+	private List<MultipartFile> imageFiles;
 
 	@NotNull
 	private Long categoryId;
@@ -190,6 +195,14 @@ public class ProductDTO {
 
 	public void setUserId(Long userId) {
 		this.userId = userId;
+	}
+
+	public List<MultipartFile> getImageFiles() {
+		return imageFiles;
+	}
+
+	public void setImageFiles(List<MultipartFile> imageFiles) {
+		this.imageFiles = imageFiles;
 	}
 
 	@Override

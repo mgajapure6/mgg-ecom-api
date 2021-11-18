@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+<link rel="stylesheet" th:href="@{/css/style.css}">
+<title>Add Product!</title>
+</head>
+<body>
+	<div class="container-fluid px-1 py-5 mx-auto">
+		<div class="row d-flex justify-content-center">
+			<div class="col-xl-7 col-lg-8 col-md-9 col-11 text-center">
+				<!--<h3>Request a Demo</h3>
+            <p class="blue-text">Just answer a few questions<br> so that we can personalize the right experience for you.</p>-->
+				<div class="card">
+					<h4 class="text-center mb-4">Add Product Details</h4>
+					<br />
+					<!--Start Tabs-->
+					<div class="container">
+						<ul class="nav nav-tabs" id="myTab" role="tablist">
+							<li class="nav-item"><a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Home</a></li>
+							<li class="nav-item"><a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Profile</a></li>
+							<li class="nav-item"><a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Contact</a></li>
+						</ul>
+						<div class="tab-content" id="myTabContent">
+							<div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+								<br />
+								<form class="form-card" onsubmit="event.preventDefault()">
+									<div class="row justify-content-between text-left">
+										<div class="form-group col-sm-6 flex-column d-flex">
+											<label class="form-control-label px-3">Product name<span class="text-danger"> *</span></label> <input type="text" id="pName" name="pName" placeholder="Enter Product name" onblur="validate(1)">
+										</div>
+										<div class="form-group col-sm-6 flex-column d-flex">
+											<label class="form-control-label px-3">Product Description<span class="text-danger"> *</span></label> <input type="text" id="pDesc" name="pDesc" placeholder="Enter Product Desciption" onblur="validate(2)">
+										</div>
+									</div>
+									<div class="row justify-content-between text-left">
+										<div class="form-group col-sm-6 flex-column d-flex">
+											<label class="form-control-label px-3">Product SKU<span class="text-danger"> *</span></label> <input type="text" id="pSku" name="pSku" placeholder="Enter Product SKU" onblur="validate(3)">
+										</div>
+										<div class="form-group col-sm-6 flex-column d-flex">
+											<label class="form-control-label px-3">Product Model<span class="text-danger"> *</span></label> <input type="text" id="pModel" name="pModel" placeholder="Enter Product Model" onblur="validate(4)">
+										</div>
+									</div>
+									<div class="row justify-content-between text-left">
+										<div class="form-group col-sm-6 flex-column d-flex">
+											<label class="form-control-label px-3">Product TAGs<span class="text-danger"> *</span></label> <input type="text" id="pTags" name="pTags" placeholder="Enter Product TAGs" onblur="validate(3)">
+										</div>
+										<div class="form-group col-sm-6 flex-column d-flex">
+											<label class="form-control-label px-3">Product Price<span class="text-danger"> *</span></label> <input type="text" id="pPrice" name="pPrice" placeholder="Enter Product Price" onblur="validate(4)">
+										</div>
+									</div>
+									<div class="row justify-content-between text-left">
+										<div class="form-group col-sm-6 flex-column d-flex">
+											<label class="form-control-label px-3">Product Special Price<span class="text-danger"> *</span></label> <input type="text" id="pTags" name="pTags" placeholder="Enter Product TAGs" onblur="validate(3)">
+										</div>
+										<div class="form-group col-sm-6 flex-column d-flex">
+											<label class="form-control-label px-3">Product Quantity<span class="text-danger"> *</span></label> <input type="text" id="pPrice" name="pPrice" placeholder="Enter Product Price" onblur="validate(4)">
+										</div>
+									</div>
+									<div class="row justify-content-between text-left">
+										<div class="form-group col-sm-6 flex-column d-flex">
+											<label class="form-control-label px-3">Product Attributes<span class="text-danger"> *</span></label> <input type="text" id="pTags" name="pTags" placeholder="Enter Product TAGs" onblur="validate(3)">
+										</div>
+										<div class="form-group col-sm-6 flex-column d-flex">
+											<label class="form-control-label px-3">Product Price<span class="text-danger"> *</span></label> <input type="text" id="pPrice" name="pPrice" placeholder="Enter Product Price" onblur="validate(4)">
+										</div>
+									</div>
+									<div class="row justify-content-end">
+										<!--<div class="form-group col-sm-6"> <input type="file" class="btn-block custom-file-input"
+									id="validatedCustomFile" required>
+								<label class="btn-block custom-file-label" for="validatedCustomFile">Add Product
+									Photos</label> </div>-->
+										<div class="form-group col-sm-6">
+											<button type="submit" class="btn-block btn-primary">Clear</button>
+										</div>
+										<div class="form-group col-sm-6">
+											<button type="submit" class="btn-block btn-primary">Next</button>
+										</div>
+									</div>
+								</form>
+							</div>
+							<div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+								<h2>Profile</h2>
+								<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque, eveniet earum. Sed accusantium eligendi molestiae quo hic velit nobis et, tempora placeat ratione rem blanditiis voluptates vel ipsam? Facilis, earum!</p>
+							</div>
+							<div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+								<h2>Contact</h2>
+								<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque, eveniet earum. Sed accusantium eligendi molestiae quo hic velit nobis et, tempora placeat ratione rem blanditiis voluptates vel ipsam? Facilis, earum!</p>
+							</div>
+						</div>
+					</div>
+					<!--end of Tabs-->
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+	<script th:src="@{/js/jquery-3.2.1.slim.min.js}"></script>
+	<script th:src="@{/js/popper.min.js}"></script>
+	<script th:src="@{/js/bootstrap.min.js}"></script>
+</body>
+</html>

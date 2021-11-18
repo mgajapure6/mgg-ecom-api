@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+<link rel="stylesheet" th:href="@{/css/uppy.min.css}">
+<!-- <link rel="stylesheet" th:href="@{/css/style.css}"> -->
+<title>Add Product!</title>
+<style type="text/css">
+.card {
+	border: none !important;
+	box-shadow: 0 6px 12px 0 rgba(0, 0, 0, 0.2)
+}
+
+div.tab {
+	display: none;
+}
+
+input.invalid {
+	background-color: #ffdddd;
+}
+
+#imageDropZone {
+	width: 100%;
+}
+
+#file-preview {
+	width: 100%;
+	height: 350px;
+	box-shadow: 1px 1px 1px 1px solid #ccc;
+	border: 1px solid #ccc;
+	padding: 15px;
+}
+
+.no-images {
+	width: 100%;
+	height: 100%;
+}
+
+.img-preview {
+	width: 180px;
+	height: 180px;
+	position: relative;
+}
+
+.img-preview img {
+	width: 180px;
+	height: 180px;
+	object-fit: cover;
+}
+
+.img-preview a.del-wrap {
+	position: absolute;
+	right: -8px;
+	top: -10px;
+	background: #403b3bcf;
+	border-radius: 45px;
+	color: #fff;
+	width: 20px;
+	height: 20px;
+}
+
+.img-preview a.del-wrap span {
+	position: absolute;
+	right: 6px;
+	top: -5px;
+}
+
+a.del-wrap:hover {
+	background: #000;
+	color: red;
+}
+</style>
+</head>
+<body>
+	<div class="container">
+		<div th:if="${message}">
+			
+		</div>
+		<div class="card m-5">
+			<h3 class="text-center mb-3 mt-3">Add Product Details</h3>
+			
+			<!-- <div class="alert alert-success mt-4 mb-4" role="alert">
+				<strong>${message}</strong>
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div> -->
+			<div class="card-body">
+				<hr />
+				<form method="post" th:action="@{/ui/products/uploadImages}" enctype="multipart/form-data" th:object="${productDTO}" id="productForm">
+					<div class="tab tab-1">
+						<h5>Tab 1</h5>
+						<hr />
+						<div class="row">
+							<div class="col">
+								<div class="custom-file">
+									<input type="file" class="custom-file-input" id="imageFile" multiple="multiple" accept="image/*" name="file" th:field="*{imageFiles}">
+									<label class="custom-file-label" for="customFile">Choose Image</label>
+								</div>
+							</div>
+						</div>
+						<hr />
+						<div class="row">
+							<div class="col">
+								<div id="file-preview">
+									<div class="d-flex justify-content-center no-images">
+										<div class="align-self-center">
+											<span class="h3">Image Preview</span><br />
+											<div>
+												<small>Only Images are allowed, max 5 images, up to 1 MB of each image file</small>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<hr />
+						<div class="row">
+							<div class="col-6">
+								<div class="form-group">
+									<label for="pName">Product name <span class="text-danger"> *</span></label>
+									<input type="text" class="form-control required" id="pName" name="prodName" placeholder="Enter product name" th:field="*{prodName}">
+								</div>
+							</div>
+							<div class="col-6">
+								<div class="form-group">
+									<label for="pName">Product SKU </label>
+									<input type="text" class="form-control required" id="pSku" name="prodSku" placeholder="Enter product SKU" th:field="*{prodSku}">
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="tab tab-2">
+						<div class="d-flex justify-content-between">
+							<h5>Add Product Attributes</h5>
+							<button type="button" class="btn btn-primary btn-sm" onclick="addAttributeRowBtn()">Add ROW</button>
+						</div>
+						<br />
+						<div>
+							<table id="attributeTable" class="table">
+								<thead>
+									<tr>
+										<th>#</th>
+										<th>Attributes Name</th>
+										<th>Attributes Value</th>
+										<th>Attributes Type</th>
+										<th class="text-center">Delete</th>
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="tab tab-3">
+						<div class="d-flex justify-content-between">
+							<h5>Add Product Images</h5>
+						</div>
+						<hr />
+					</div>
+					<div class="tab tab-confirm">
+						<h5>Confirm</h5>
+					</div>
+					<hr />
+					<div class="tab-buttons mt-4 mb-4">
+						<div class="d-flex justify-content-end">
+							<button type="button" class="btn btn-secondary prev mr-3"><< Previous</button>
+							<button type="button" class="btn btn-primary nxt">Next >></button>
+							<button type="button" class="btn btn-primary submit">Submit</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+	<script th:src="@{/js/jquery-3.2.1.slim.min.js}"></script>
+	<script th:src="@{/js/popper.min.js}"></script>
+	<script th:src="@{/js/bootstrap.min.js}"></script>
+	<script th:src="@{/js/uppy.min.js}"></script>
+	<script type="text/javascript">
+		$('button.submit').click(function(e){0
+			e.preventDefault();
+			var formElement = document.getElementById('productForm');
+			var formData = new FormData(formElement);
+			var request = new XMLHttpRequest();
+			request.open("POST", "/ui/products/uploadImages");
+			request.send(formData);
+			request.onload = ajaxSuccess;
+		});
+		
+		function ajaxSuccess () {
+			console.log("responseText",this.responseText);
+		}
+		
+		
+		
+	</script>
+	<script type="text/javascript">
+		var inputElement = document.getElementById("imageFile");
+		inputElement.addEventListener("change", handleFiles, false);
+		function handleFiles() {
+
+		  filterUnwantedFiles(this.files);
+		  var fileList = document.getElementById("imageFile").files;
+		  
+		  console.log("fileList",fileList);
+		  var numFiles = fileList.length;
+		  console.log("numFiles",numFiles);
+		  
+		  var imgArray = [];
+		  for (var i = 0, numFiles = fileList.length; i < numFiles; i++) {
+			  var file = fileList[i];
+			  
+			  var img = $('<img class="img-thumbnail" />');
+			  $(img).attr('src', URL.createObjectURL(file));
+			  var div = $('<div class="img-preview mr-4"></div>');
+			  $(div).append('<a href="javascript:;" onclick="handleFileRemove('+i+',this)" class="del-wrap" title="Delete File"><span>x</span></a>');
+			  $(div).append(img);
+			  $(div).append('<div class="text-center small">'+file.name+'</div>');
+			  imgArray.push($(div));
+		  }
+		  
+		  if(imgArray.length){
+			  console.log("imgArray::",imgArray);
+			  $('#file-preview').empty();
+			  $('#file-preview').addClass("d-flex");
+			  for (var i = 0; i < imgArray.length; i++) {
+				  $('#file-preview').append(imgArray[i]);
+			  }
+			  $('#file-preview').find('div.img-preview:last').removeClass('mr-4')
+		  }
+		}
+		
+		
+		function filterUnwantedFiles(fileList){
+			var fileBuffer = new DataTransfer();
+			for (var i = 0; i < fileList.length; i++) {
+				  var file = fileList[i];
+				  var isImage = file.type.indexOf("image")>-1;
+				  var size = getFileSize(file);
+				  var sizeNum = size.split(" ")[0];
+				  var sizeType = size.split(" ")[1];
+				  var isUpto1MB = sizeType == "MB" && sizeNum <= 1 ? true : sizeType == "KB" ? true : false;
+				  if(!isImage){
+					  alert("Only image files are allowed");
+				  }else if(!isUpto1MB){
+					  alert(file.name +" file size is too large");
+				  }else{
+					  fileBuffer.items.add(file);
+				  }
+			}
+			
+			document.getElementById("imageFile").files = fileBuffer.files;
+		}
+		
+		
+		function handleFileRemove(index, ele){
+			
+			var fileList = document.getElementById("imageFile").files;
+			var fileBuffer = new DataTransfer();
+			for (var i = 0; i < fileList.length; i++) {
+				if(index !== i){
+					fileBuffer.items.add(fileList[i]);
+				}
+			}
+			document.getElementById("imageFile").files = fileBuffer.files;
+			if(ele){
+				$(ele).closest('div.img-preview').remove();
+			}
+			if($('div.img-preview').length==0){
+				$('#file-preview').html('<div class="d-flex justify-content-center no-images">'+
+						'<div class="align-self-center">'+
+						'<span class="h3">Image Preview</span><br />'+
+						'<div>'+
+							'<small>Only Images are allowed, max 5 images, up to 1 MB of each image file</small>'+
+						'</div>'+
+					'</div>'+
+				'</div>');
+			}
+			
+		}
+		
+		function getFileSize(file) {
+		    var nBytes = file.size;
+		    var sOutput = nBytes + " bytes";
+		    // optional code for multiples approximation
+		    const aMultiples = ["KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
+		    var nApprox = 0;
+		    for (var nMultiple = 0, nApprox = nBytes / 1024; nApprox > 1; nApprox /= 1024, nMultiple++) {
+		      sOutput = nApprox.toFixed(2) + " " + aMultiples[nMultiple];
+		    }
+		    return sOutput;
+		}
+
+	</script>
+	<script type="text/javascript">
+	
+	  /* var uppy = new Uppy.Core({
+		  restrictions: {
+			    maxFileSize: 1048576,
+			    minFileSize: null,
+			    maxTotalFileSize: 5242880,
+			    maxNumberOfFiles: 5,
+			    minNumberOfFiles: 1,
+			    allowedFileTypes: ['.jpg', '.jpeg', '.png'],
+			    requiredMetaFields: [],
+			  },
+	  });
+	  uppy.use(Uppy.Dashboard, {
+      	inline: true,
+      	width: '100%',
+        height: 450,
+      	target: '#imageDropZone',
+      	theme: 'light',
+      	note: 'Only Images are allowed, max 5 images, up to 1 MB of each image file',
+      	proudlyDisplayPoweredByUppy: false
+      });
+	  uppy.use(Uppy.ImageEditor, { 
+		  target: Uppy.Dashboard,
+		  quality: 0.8,
+		  cropperOptions: {
+		    viewMode: 1,
+		    background: true,
+		    autoCropArea: 1,
+		    responsive: true,
+		    croppedCanvasOptions: {},
+		    modal: false,
+		    dragMode: 'move'
+		  },
+		  actions: {
+		    revert: true,
+		    rotate: true,
+		    granularRotate: true,
+		    flip: true,
+		    zoomIn: true,
+		    zoomOut: true,
+		    cropSquare: true,
+		    cropWidescreen: true,
+		    cropWidescreenVertical: true,
+		  },
+	  });
+	  uppy.use(Uppy.XHRUpload, {
+		  endpoint: '/ui/products/uploadImages',
+		  formData: true,
+		  fieldName: 'file'
+	 });
+
+	  uppy.on('complete', (result) => {
+		console.log("result",result);
+	    console.log('Upload complete! We’ve uploaded these files:', result.successful)
+	  });
+ */	
+	</script>
+	<script type="text/javascript">
+		setTimeout(function() {
+			addAttributeRowBtn();
+		}, 1500);
+
+		function addAttributeRowBtn() {
+			var trCount = $('#attributeTable tbody>tr').length;
+			$('#attributeTable tbody').append('<tr><td>' + (trCount + 1) + '</td><td><input type="text" class="form-control name" /></td><td><input type="text" class="form-control value" /></td><td><select class="form-control name"><option value="Attribute" selected>Attribute</option><option value="Heading">Heading</option></select></td><td class="text-center"><button type="button" class="btn btn-sm btn-danger" onclick="deleteAttributeRowBtn(this)">x</button></td></tr>');
+		}
+
+		function deleteAttributeRowBtn(ele) {
+			$(ele).closest('tr').remove();
+			$('#attributeTable tbody>tr').each(function(i, tr) {
+				$(tr).find('td:first').html(i + 1);
+			});
+		}
+	</script>
+	<script type="text/javascript">
+		var allTabs = $('div.tab');
+		var nxtBtn = $("button.nxt");
+		var prevBtn = $("button.prev");
+		var submitBtn = $("button.submit");
+
+		//first tab is current tab
+		var currentTab = 0;
+
+		//showing first tab
+		showTab(currentTab);
+
+		//validateTab(currentTab);
+
+		function showTab(tabIndex) {
+			$(allTabs[tabIndex]).show();
+			tabIndex == 0 ? $(prevBtn).hide() : $(prevBtn).show();
+			allTabs.length - 1 == tabIndex ? $(submitBtn).show() : $(submitBtn).hide();
+			allTabs.length - 1 == tabIndex ? $(nxtBtn).hide() : $(nxtBtn).show();
+		}
+
+		function validateTab(tabIndex) {
+			var tab = $(allTabs[tabIndex]);
+			var inputs = $(tab).find('input');
+			var selects = $(tab).find('select');
+			var textAreas = $(tab).find('textarea');
+			var invalidIds = [];
+			$(inputs).each(function(i, input) {
+				if ($(input).hasClass('required') && $(input).val().length == 0) {
+					invalidIds.push($(input).attr('id'));
+				}
+			});
+
+			$(selects).each(function(i, input) {
+				if ($(input).hasClass('required') && $(input).val().length == 0) {
+					invalidIds.push($(input).attr('id'));
+				}
+			});
+
+			$(textAreas).each(function(i, input) {
+				if ($(input).hasClass('required') && $(input).val().length == 0) {
+					invalidIds.push($(input).attr('id'));
+				}
+			});
+
+			$.each(invalidIds, function(i, id) {
+				$('#' + id).addClass('invalid');
+			});
+
+			if (invalidIds.length) {
+				return false;
+			} else {
+				$(tab).find('.invalid').removeClass('invalid');
+				return true;
+			}
+		}
+
+		$(nxtBtn).click(function() {
+			if (validateTab(currentTab)) {
+				$(allTabs[currentTab]).hide();
+				currentTab = currentTab + 1;
+				showTab(currentTab);
+			}
+		});
+
+		$(prevBtn).click(function() {
+			$(allTabs[currentTab]).hide();
+			currentTab = currentTab - 1;
+			showTab(currentTab);
+		});
+
+		//current index
+
+		/* 
+			var tabs = $('div.tab');
+			var nxtBtn = $("button.nxt");
+			var prevBtn = $("button.prev");
+			var submitBtn = $("button.submit");
+			$(tabs).hide();
+
+			var totalTabs = tabs.length;
+			console.log('totalTabs::', totalTabs);
+			var currentTabIndex = 1;
+			console.log('currentTabIndex::', currentTabIndex);
+			$(tabs[currentTabIndex-1]).show();
+			$(prevBtn).hide();
+			$(submitBtn).hide();
+			$(nxtBtn).click(function(e) {
+				$(tabs).hide();
+				if (totalTabs >=currentTabIndex) {
+					currentTabIndex = currentTabIndex + 1;
+					$(tabs[currentTabIndex-1]).show();
+					currentTabIndex > 0 ? $(prevBtn).show() : $(prevBtn).hide();
+					if(totalTabs == currentTabIndex){
+						 $(nxtBtn).hide(); 
+						 $(submitBtn).show();
+					}else{
+						$(nxtBtn).show();
+						$(submitBtn).hide();
+					}
+				} else{
+					return;
+				}
+				console.log('currentTabIndex::', currentTabIndex);
+			});
+			
+			$(prevBtn).click(function(e) {
+				$(tabs).hide();
+				$(submitBtn).hide();
+				$(nxtBtn).show();
+				currentTabIndex = currentTabIndex - 1;
+				$(tabs[currentTabIndex-1]).show();
+				currentTabIndex == 1 ? $(prevBtn).hide() : $(prevBtn).show();
+			}); */
+	</script>
+</body>
+</html>

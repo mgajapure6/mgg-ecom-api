@@ -29,12 +29,17 @@ public class SecutiryConfig extends WebSecurityConfigurerAdapter {
 	private final JwtAuthenticationEntryPoint unauthorizedHandler;
 	private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
-	private static final String[] AUTH_WHITELIST = {
+	private static final String[] WHITELIST_API = {
 			// -- Swagger UI v2
 			"/v2/api-docs", "/swagger-resources", "/swagger-resources/**", "/swagger-ui.html", "/webjars/**",
 			// -- Swagger UI v3 (OpenAPI)
-			"/v3/api-docs/**", "/swagger-ui/**", "/doc**", "/doc/**", "/"
-			// other public endpoints of your API may be appended to this array
+			"/v3/api-docs/**", "/swagger-ui/**", "/doc**", "/doc/**", "/" ,
+			// other public endpoints
+			"/js/**", "/css/**", "/img/**", "/templates/**", "/static/**","/resources/**", "/favicon.ico",
+			// open user api
+			"/api/users/checkUsernameAvailability", "/api/users/checkEmailAvailability", "/api/users/accVerify",
+			//open product ui api
+			"/ui/products/", "/ui/products/**"
 	};
 
 	@Autowired
@@ -44,6 +49,8 @@ public class SecutiryConfig extends WebSecurityConfigurerAdapter {
 		this.unauthorizedHandler = unauthorizedHandler;
 		this.jwtAuthenticationFilter = jwtAuthenticationFilter;
 	}
+	
+	
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
@@ -53,10 +60,7 @@ public class SecutiryConfig extends WebSecurityConfigurerAdapter {
 		http.cors().and().csrf().disable().exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
 				.antMatchers(HttpMethod.GET, "/api/**").permitAll().antMatchers(HttpMethod.POST, "/api/auth/**")
-				.permitAll()
-				.antMatchers(HttpMethod.GET, "/api/users/checkUsernameAvailability",
-						"/api/users/checkEmailAvailability", "/api/users/accVerify")
-				.permitAll().antMatchers(AUTH_WHITELIST).permitAll().anyRequest().authenticated();
+				.permitAll().antMatchers(WHITELIST_API).permitAll().anyRequest().authenticated();
 
 		http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
