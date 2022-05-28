@@ -1,0 +1,605 @@
+{
+	"version": 1,
+	"collections": [
+		{
+			"id": "3c6c02dd-eb00-423f-bcfd-cc7f5cacce3a",
+			"uid": "0-3c6c02dd-eb00-423f-bcfd-cc7f5cacce3a",
+			"name": "Order Api",
+			"description": null,
+			"auth": null,
+			"events": null,
+			"variables": [],
+			"order": [
+				"4440aa4e-472b-4712-98fb-9975ee052172",
+				"58eff71d-8650-4071-924a-5bd7f9687deb"
+			],
+			"folders_order": [],
+			"protocolProfileBehavior": {},
+			"createdAt": "2021-07-31T10:02:02.347Z",
+			"folders": [],
+			"requests": [
+				{
+					"id": "4440aa4e-472b-4712-98fb-9975ee052172",
+					"uid": "0-4440aa4e-472b-4712-98fb-9975ee052172",
+					"name": "Get Order By ID",
+					"url": "http://localhost:8080/api/v1/order/7",
+					"description": "",
+					"data": null,
+					"dataOptions": null,
+					"dataMode": null,
+					"headerData": [
+						{
+							"key": "Authorization",
+							"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjI3Nzk5MDE4LCJleHAiOjE2Mjc4NDIyMTh9.JbgMnWcLRpg7rEzOXLouxVyusiDV_ftSHhMsVn8IqkwmSnVATjqQOScU3IfC0wYGlxm6fnT2OMLbAXyOGTCWcw",
+							"description": "",
+							"type": "text",
+							"enabled": true
+						}
+					],
+					"method": "GET",
+					"pathVariableData": [],
+					"queryParams": [],
+					"auth": null,
+					"events": null,
+					"folder": null,
+					"responses_order": [],
+					"currentHelper": null,
+					"helperAttributes": null,
+					"collectionId": "3c6c02dd-eb00-423f-bcfd-cc7f5cacce3a",
+					"headers": "Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjI3Nzk5MDE4LCJleHAiOjE2Mjc4NDIyMTh9.JbgMnWcLRpg7rEzOXLouxVyusiDV_ftSHhMsVn8IqkwmSnVATjqQOScU3IfC0wYGlxm6fnT2OMLbAXyOGTCWcw\n",
+					"pathVariables": {}
+				},
+				{
+					"id": "58eff71d-8650-4071-924a-5bd7f9687deb",
+					"uid": "0-58eff71d-8650-4071-924a-5bd7f9687deb",
+					"name": "Add Order",
+					"url": "http://localhost:8080/api/v1/order",
+					"description": "",
+					"data": [],
+					"dataOptions": {
+						"raw": {
+							"language": "json"
+						}
+					},
+					"dataMode": "raw",
+					"headerData": null,
+					"method": "POST",
+					"pathVariableData": [],
+					"queryParams": [],
+					"auth": null,
+					"events": null,
+					"folder": null,
+					"responses_order": [],
+					"currentHelper": null,
+					"helperAttributes": null,
+					"collectionId": "3c6c02dd-eb00-423f-bcfd-cc7f5cacce3a",
+					"rawModeData": "{\r\n    \"orderDate\": \"2021-08-01T06:55:28.689Z\",\r\n    \"products\": [\r\n      {\r\n        \"id\": 0,\r\n        \"prodName\": \"string\",\r\n        \"prodDesc\": \"string\",\r\n        \"prodSku\": \"string\",\r\n        \"prodModel\": \"string\",\r\n        \"prodTags\": \"string\",\r\n        \"prodPrice\": 0,\r\n        \"prodSpecialPrice\": 0,\r\n        \"prodQuantity\": 0,\r\n        \"prodAttributes\": [\r\n          {\r\n            \"id\": 0,\r\n            \"name\": \"string\",\r\n            \"value\": \"string\"\r\n          }\r\n        ],\r\n        \"prodPhotos\": [\r\n          {\r\n            \"id\": 0,\r\n            \"title\": \"string\",\r\n            \"url\": \"string\",\r\n            \"thumbnailUrl\": \"string\"\r\n          }\r\n        ],\r\n        \"categoryId\": 0,\r\n        \"userId\": 0\r\n      }\r\n    ],\r\n    \"userId\": 0\r\n  }",
+					"pathVariables": {}
+				}
+			]
+		},
+		{
+			"id": "66589b09-a42a-4b1b-b80c-0ddd0ea77e42",
+			"uid": "0-66589b09-a42a-4b1b-b80c-0ddd0ea77e42",
+			"name": "Heroku User API",
+			"description": null,
+			"auth": null,
+			"events": null,
+			"variables": [],
+			"order": [
+				"ae2a6b5b-8261-4c48-9e78-5f0fdee56635",
+				"67fe8d56-5804-4c09-87a8-6b1ee5d0718e",
+				"0e605364-acae-4dda-b1bd-7c1ea0389f5c"
+			],
+			"folders_order": [],
+			"protocolProfileBehavior": {},
+			"createdAt": "2021-09-02T08:56:52.464Z",
+			"folders": [],
+			"requests": [
+				{
+					"id": "0e605364-acae-4dda-b1bd-7c1ea0389f5c",
+					"uid": "0-0e605364-acae-4dda-b1bd-7c1ea0389f5c",
+					"name": "Get logged User Detail",
+					"url": "https://mgg-ecomm-api.herokuapp.com/api/users/me",
+					"description": "",
+					"data": null,
+					"dataOptions": null,
+					"dataMode": null,
+					"headerData": [
+						{
+							"key": "Authorization",
+							"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjMwNTcyOTg0LCJleHAiOjE2MzA2MTYxODR9.lyqrAmaz3tUab6RC_a9pbajApzNeTRLLxBAhEUq9Cwu_QXD5PYzwRbK-n1e5x3xQqYVqIpHSEMuGMGKvtvQVUw",
+							"description": "",
+							"type": "text",
+							"enabled": true
+						}
+					],
+					"method": "GET",
+					"pathVariableData": [],
+					"queryParams": [],
+					"auth": null,
+					"events": null,
+					"folder": null,
+					"responses_order": [],
+					"currentHelper": null,
+					"helperAttributes": null,
+					"collectionId": "66589b09-a42a-4b1b-b80c-0ddd0ea77e42",
+					"headers": "Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjMwNTcyOTg0LCJleHAiOjE2MzA2MTYxODR9.lyqrAmaz3tUab6RC_a9pbajApzNeTRLLxBAhEUq9Cwu_QXD5PYzwRbK-n1e5x3xQqYVqIpHSEMuGMGKvtvQVUw\n",
+					"pathVariables": {}
+				},
+				{
+					"id": "67fe8d56-5804-4c09-87a8-6b1ee5d0718e",
+					"uid": "0-67fe8d56-5804-4c09-87a8-6b1ee5d0718e",
+					"name": "Get User Profile",
+					"url": "https://mgg-ecomm-api.herokuapp.com/api/users/admin/profile",
+					"description": "",
+					"data": null,
+					"dataOptions": null,
+					"dataMode": null,
+					"headerData": [
+						{
+							"key": "Authorization",
+							"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjMwNTcyOTg0LCJleHAiOjE2MzA2MTYxODR9.lyqrAmaz3tUab6RC_a9pbajApzNeTRLLxBAhEUq9Cwu_QXD5PYzwRbK-n1e5x3xQqYVqIpHSEMuGMGKvtvQVUw",
+							"description": "",
+							"type": "text",
+							"enabled": true
+						}
+					],
+					"method": "GET",
+					"pathVariableData": [],
+					"queryParams": [],
+					"auth": null,
+					"events": null,
+					"folder": null,
+					"responses_order": [],
+					"currentHelper": null,
+					"helperAttributes": null,
+					"collectionId": "66589b09-a42a-4b1b-b80c-0ddd0ea77e42",
+					"headers": "Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjMwNTcyOTg0LCJleHAiOjE2MzA2MTYxODR9.lyqrAmaz3tUab6RC_a9pbajApzNeTRLLxBAhEUq9Cwu_QXD5PYzwRbK-n1e5x3xQqYVqIpHSEMuGMGKvtvQVUw\n",
+					"pathVariables": {}
+				},
+				{
+					"id": "ae2a6b5b-8261-4c48-9e78-5f0fdee56635",
+					"uid": "0-ae2a6b5b-8261-4c48-9e78-5f0fdee56635",
+					"name": "Login",
+					"url": "https://mgg-ecomm-api.herokuapp.com/api/auth/signin",
+					"description": "",
+					"data": [],
+					"dataOptions": {
+						"raw": {
+							"language": "json"
+						}
+					},
+					"dataMode": "raw",
+					"headerData": null,
+					"method": "POST",
+					"pathVariableData": [],
+					"queryParams": [],
+					"auth": null,
+					"events": null,
+					"folder": null,
+					"responses_order": [],
+					"currentHelper": null,
+					"helperAttributes": null,
+					"collectionId": "66589b09-a42a-4b1b-b80c-0ddd0ea77e42",
+					"rawModeData": "{\r\n\t\"usernameOrEmail\": \"admin\",\r\n\t\"password\": \"admin\"\r\n}",
+					"pathVariables": {}
+				}
+			]
+		},
+		{
+			"id": "9bb66cf9-4cd6-445b-83b7-04febdc62b19",
+			"uid": "0-9bb66cf9-4cd6-445b-83b7-04febdc62b19",
+			"name": "Category",
+			"description": null,
+			"auth": null,
+			"events": null,
+			"variables": [],
+			"order": [
+				"74dc239e-ccc4-4356-8b3b-db69f27f5d9c",
+				"085e755e-b232-4995-bf3f-182e71e4f400"
+			],
+			"folders_order": [],
+			"protocolProfileBehavior": {},
+			"createdAt": "2021-07-31T11:13:52.379Z",
+			"folders": [],
+			"requests": [
+				{
+					"id": "085e755e-b232-4995-bf3f-182e71e4f400",
+					"uid": "0-085e755e-b232-4995-bf3f-182e71e4f400",
+					"name": "Get All CAtegories",
+					"url": "http://localhost:8080/api/v1/category",
+					"description": "",
+					"data": null,
+					"dataOptions": null,
+					"dataMode": null,
+					"headerData": [
+						{
+							"key": "Authorization",
+							"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjI3Nzk5MDE4LCJleHAiOjE2Mjc4NDIyMTh9.JbgMnWcLRpg7rEzOXLouxVyusiDV_ftSHhMsVn8IqkwmSnVATjqQOScU3IfC0wYGlxm6fnT2OMLbAXyOGTCWcw",
+							"description": "",
+							"type": "text",
+							"enabled": true
+						}
+					],
+					"method": "GET",
+					"pathVariableData": [],
+					"queryParams": [],
+					"auth": null,
+					"events": null,
+					"folder": null,
+					"responses_order": [],
+					"currentHelper": null,
+					"helperAttributes": null,
+					"collectionId": "9bb66cf9-4cd6-445b-83b7-04febdc62b19",
+					"headers": "Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjI3Nzk5MDE4LCJleHAiOjE2Mjc4NDIyMTh9.JbgMnWcLRpg7rEzOXLouxVyusiDV_ftSHhMsVn8IqkwmSnVATjqQOScU3IfC0wYGlxm6fnT2OMLbAXyOGTCWcw\n",
+					"pathVariables": {}
+				},
+				{
+					"id": "74dc239e-ccc4-4356-8b3b-db69f27f5d9c",
+					"uid": "0-74dc239e-ccc4-4356-8b3b-db69f27f5d9c",
+					"name": "Add Category",
+					"url": "http://localhost:8080/api/v1/category",
+					"description": "",
+					"data": [],
+					"dataOptions": {
+						"raw": {
+							"language": "json"
+						}
+					},
+					"dataMode": "raw",
+					"headerData": [
+						{
+							"key": "Authorization",
+							"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjI3NzM3ODk3LCJleHAiOjE2Mjc3NDE0OTd9.9UV80n-ukzHDJbD2iq6iEwWddDFc9fhRO8LeXwsJc7VaNndRZEgicETVJ6WSnfQPSFAJprL6Sbojzbyfoy7k-g",
+							"description": "",
+							"type": "text",
+							"enabled": true
+						}
+					],
+					"method": "POST",
+					"pathVariableData": [],
+					"queryParams": [],
+					"auth": null,
+					"events": null,
+					"folder": null,
+					"responses_order": [],
+					"currentHelper": null,
+					"helperAttributes": null,
+					"collectionId": "9bb66cf9-4cd6-445b-83b7-04febdc62b19",
+					"rawModeData": "{\r\n    \"name\" : \"Category 1\"\r\n}",
+					"headers": "Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjI3NzM3ODk3LCJleHAiOjE2Mjc3NDE0OTd9.9UV80n-ukzHDJbD2iq6iEwWddDFc9fhRO8LeXwsJc7VaNndRZEgicETVJ6WSnfQPSFAJprL6Sbojzbyfoy7k-g\n",
+					"pathVariables": {}
+				}
+			]
+		},
+		{
+			"id": "b23c4e92-ba7b-4582-b7d6-89b2796ddd26",
+			"uid": "0-b23c4e92-ba7b-4582-b7d6-89b2796ddd26",
+			"name": "Product Api",
+			"description": null,
+			"auth": null,
+			"events": null,
+			"variables": [],
+			"order": [
+				"8b692e7d-5ffc-4e39-97a4-35093a9b08b6",
+				"7fbb17cf-73e2-4c6a-a286-f7e0d1a46f9e",
+				"b3a92220-1cfa-49b5-88c7-7812170334c8",
+				"d5773b4f-4856-4b59-ae5f-b2831f8cf6b4",
+				"14c0e635-89ff-4d86-a62b-c2d504e89899",
+				"ca72a769-cb13-4c90-b594-8abefd5d3b4f"
+			],
+			"folders_order": [],
+			"protocolProfileBehavior": {},
+			"createdAt": "2021-07-31T10:03:23.576Z",
+			"folders": [],
+			"requests": [
+				{
+					"id": "14c0e635-89ff-4d86-a62b-c2d504e89899",
+					"uid": "0-14c0e635-89ff-4d86-a62b-c2d504e89899",
+					"name": "Update Product",
+					"url": "http://localhost:8080/api/v1/products/2",
+					"description": "",
+					"data": [],
+					"dataOptions": {
+						"raw": {
+							"language": "json"
+						}
+					},
+					"dataMode": "raw",
+					"headerData": [
+						{
+							"key": "Authorization",
+							"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjI3Nzk5MDE4LCJleHAiOjE2Mjc4NDIyMTh9.JbgMnWcLRpg7rEzOXLouxVyusiDV_ftSHhMsVn8IqkwmSnVATjqQOScU3IfC0wYGlxm6fnT2OMLbAXyOGTCWcw",
+							"description": "",
+							"type": "text",
+							"enabled": true
+						}
+					],
+					"method": "PUT",
+					"pathVariableData": [],
+					"queryParams": [],
+					"auth": null,
+					"events": null,
+					"folder": null,
+					"responses_order": [],
+					"currentHelper": null,
+					"helperAttributes": null,
+					"collectionId": "b23c4e92-ba7b-4582-b7d6-89b2796ddd26",
+					"rawModeData": "{\r\n    \"id\": 2,\r\n    \"prodName\": \"Item 1\",\r\n    \"prodDesc\": \"Desc 1\",\r\n    \"prodSku\": \"sku 1\",\r\n    \"prodModel\": \"model 1\",\r\n    \"prodTags\": \"p1\",\r\n    \"prodPrice\": 500.0,\r\n    \"prodSpecialPrice\": 480.0,\r\n    \"prodQuantity\": 20.0,\r\n    \"prodAttributes\": [\r\n        {\r\n            \"id\": 5,\r\n            \"name\": \"name 2\",\r\n            \"value\": \"val 2\"\r\n        }\r\n\r\n    ],\r\n    \"prodPhotos\": [\r\n        {\r\n            \"id\": 3,\r\n            \"title\": \"Photo 1\",\r\n            \"url\": \"url 1\",\r\n            \"thumbnailUrl\": \"tn 1\"\r\n        }\r\n    ],\r\n    \"categoryId\": 1,\r\n    \"userId\": 1\r\n}",
+					"headers": "Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjI3Nzk5MDE4LCJleHAiOjE2Mjc4NDIyMTh9.JbgMnWcLRpg7rEzOXLouxVyusiDV_ftSHhMsVn8IqkwmSnVATjqQOScU3IfC0wYGlxm6fnT2OMLbAXyOGTCWcw\n",
+					"pathVariables": {}
+				},
+				{
+					"id": "7fbb17cf-73e2-4c6a-a286-f7e0d1a46f9e",
+					"uid": "0-7fbb17cf-73e2-4c6a-a286-f7e0d1a46f9e",
+					"name": "Get Product List",
+					"url": "http://localhost:8080/api/v1/products",
+					"description": "Get product list with pagination",
+					"data": null,
+					"dataOptions": null,
+					"dataMode": null,
+					"headerData": [
+						{
+							"key": "Authorization",
+							"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjI3Nzk5MDE4LCJleHAiOjE2Mjc4NDIyMTh9.JbgMnWcLRpg7rEzOXLouxVyusiDV_ftSHhMsVn8IqkwmSnVATjqQOScU3IfC0wYGlxm6fnT2OMLbAXyOGTCWcw",
+							"description": "",
+							"type": "text",
+							"enabled": true
+						}
+					],
+					"method": "GET",
+					"pathVariableData": [],
+					"queryParams": [],
+					"auth": null,
+					"events": null,
+					"folder": null,
+					"responses_order": [],
+					"currentHelper": null,
+					"helperAttributes": null,
+					"collectionId": "b23c4e92-ba7b-4582-b7d6-89b2796ddd26",
+					"headers": "Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjI3Nzk5MDE4LCJleHAiOjE2Mjc4NDIyMTh9.JbgMnWcLRpg7rEzOXLouxVyusiDV_ftSHhMsVn8IqkwmSnVATjqQOScU3IfC0wYGlxm6fnT2OMLbAXyOGTCWcw\n",
+					"pathVariables": {}
+				},
+				{
+					"id": "8b692e7d-5ffc-4e39-97a4-35093a9b08b6",
+					"uid": "0-8b692e7d-5ffc-4e39-97a4-35093a9b08b6",
+					"name": "Get Product By ID",
+					"url": "http://localhost:8080/api/v1/products/2",
+					"description": "Get product details by product ID",
+					"data": null,
+					"dataOptions": null,
+					"dataMode": null,
+					"headerData": null,
+					"method": "GET",
+					"pathVariableData": [],
+					"queryParams": [],
+					"auth": null,
+					"events": null,
+					"folder": null,
+					"responses_order": [],
+					"currentHelper": null,
+					"helperAttributes": null,
+					"collectionId": "b23c4e92-ba7b-4582-b7d6-89b2796ddd26",
+					"pathVariables": {}
+				},
+				{
+					"id": "b3a92220-1cfa-49b5-88c7-7812170334c8",
+					"uid": "0-b3a92220-1cfa-49b5-88c7-7812170334c8",
+					"name": "Get Products By Category",
+					"url": "http://localhost:8080/api/v1/products/category/1",
+					"description": "",
+					"data": null,
+					"dataOptions": null,
+					"dataMode": null,
+					"headerData": [
+						{
+							"key": "Authorization",
+							"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjI3Nzk5MDE4LCJleHAiOjE2Mjc4NDIyMTh9.JbgMnWcLRpg7rEzOXLouxVyusiDV_ftSHhMsVn8IqkwmSnVATjqQOScU3IfC0wYGlxm6fnT2OMLbAXyOGTCWcw",
+							"description": "",
+							"type": "text",
+							"enabled": true
+						}
+					],
+					"method": "GET",
+					"pathVariableData": [],
+					"queryParams": [],
+					"auth": null,
+					"events": null,
+					"folder": null,
+					"responses_order": [],
+					"currentHelper": null,
+					"helperAttributes": null,
+					"collectionId": "b23c4e92-ba7b-4582-b7d6-89b2796ddd26",
+					"headers": "Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjI3Nzk5MDE4LCJleHAiOjE2Mjc4NDIyMTh9.JbgMnWcLRpg7rEzOXLouxVyusiDV_ftSHhMsVn8IqkwmSnVATjqQOScU3IfC0wYGlxm6fnT2OMLbAXyOGTCWcw\n",
+					"pathVariables": {}
+				},
+				{
+					"id": "ca72a769-cb13-4c90-b594-8abefd5d3b4f",
+					"uid": "0-ca72a769-cb13-4c90-b594-8abefd5d3b4f",
+					"name": "Delete Product By ID",
+					"url": "http://localhost:8080/api/v1/products/1",
+					"description": "",
+					"data": null,
+					"dataOptions": null,
+					"dataMode": null,
+					"headerData": [
+						{
+							"key": "Authorization",
+							"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjI3NzU0ODQwLCJleHAiOjE2Mjc3NTg0NDB9.FQos8KNVeylxdYf2ApbfWCvz2-J9r0rmwlrkT51DvsvLbUssGQQnmkRBpFASKEAF-WXgbQP38Hbd_jq1wgwTZQ",
+							"description": "",
+							"type": "text",
+							"enabled": true
+						}
+					],
+					"method": "DELETE",
+					"pathVariableData": [],
+					"queryParams": [],
+					"auth": null,
+					"events": null,
+					"folder": null,
+					"responses_order": [],
+					"currentHelper": null,
+					"helperAttributes": null,
+					"collectionId": "b23c4e92-ba7b-4582-b7d6-89b2796ddd26",
+					"headers": "Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjI3NzU0ODQwLCJleHAiOjE2Mjc3NTg0NDB9.FQos8KNVeylxdYf2ApbfWCvz2-J9r0rmwlrkT51DvsvLbUssGQQnmkRBpFASKEAF-WXgbQP38Hbd_jq1wgwTZQ\n",
+					"pathVariables": {}
+				},
+				{
+					"id": "d5773b4f-4856-4b59-ae5f-b2831f8cf6b4",
+					"uid": "0-d5773b4f-4856-4b59-ae5f-b2831f8cf6b4",
+					"name": "Save Product",
+					"url": "http://localhost:8080/api/v1/products",
+					"description": "Add product",
+					"data": [],
+					"dataOptions": {
+						"raw": {
+							"language": "json"
+						}
+					},
+					"dataMode": "raw",
+					"headerData": [
+						{
+							"key": "Authorization",
+							"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjI3NzQ3NTg3LCJleHAiOjE2Mjc3NTExODd9.gNNMH-aBludpeeO0In9qQAyES-suxRCYe55SIr5LWoOd2NTWYT3nQ1BGqWJyM60dldKDIgsS2o8KsBpGsdxvRA",
+							"description": "",
+							"type": "text",
+							"enabled": true
+						}
+					],
+					"method": "POST",
+					"pathVariableData": [],
+					"queryParams": [],
+					"auth": null,
+					"events": null,
+					"folder": null,
+					"responses_order": [],
+					"currentHelper": null,
+					"helperAttributes": null,
+					"collectionId": "b23c4e92-ba7b-4582-b7d6-89b2796ddd26",
+					"rawModeData": "{\r\n    \"prodName\": \"Item 1\",\r\n    \"prodDesc\": \"Desc 1\",\r\n    \"prodSku\": \"sku 1\",\r\n    \"prodModel\": \"model 1\",\r\n    \"prodTags\": \"p1\",\r\n    \"prodPrice\": 500,\r\n    \"prodSpecialPrice\": 480,\r\n    \"prodQuantity\": 20,\r\n    \"categoryId\": 1,\r\n    \"prodAttributes\": [{\r\n        \"id\": 1,\r\n        \"name\": \"name 1\",\r\n        \"value\": \"val 1\"\r\n      }],\r\n    \"prodPhotos\": [{\r\n        \"title\": \"Photo 1\",\r\n        \"url\": \"url 1\",\r\n        \"thumbnailUrl\": \"tn 1\"\r\n      }],\r\n    \"userId\": 0\r\n}",
+					"headers": "Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjI3NzQ3NTg3LCJleHAiOjE2Mjc3NTExODd9.gNNMH-aBludpeeO0In9qQAyES-suxRCYe55SIr5LWoOd2NTWYT3nQ1BGqWJyM60dldKDIgsS2o8KsBpGsdxvRA\n",
+					"pathVariables": {}
+				}
+			]
+		},
+		{
+			"id": "b9ebe3bb-aaab-433e-b172-2beae0293a13",
+			"uid": "0-b9ebe3bb-aaab-433e-b172-2beae0293a13",
+			"name": "User Api",
+			"description": null,
+			"auth": null,
+			"events": null,
+			"variables": [],
+			"order": [
+				"4c734955-8661-4e49-8366-3c7c89f49270",
+				"47e8578b-26fb-442e-821a-22acfd2615b4",
+				"b8e812dd-26a6-4aeb-b224-8083034c1429"
+			],
+			"folders_order": [],
+			"protocolProfileBehavior": {},
+			"createdAt": "2021-07-31T10:02:54.962Z",
+			"folders": [],
+			"requests": [
+				{
+					"id": "47e8578b-26fb-442e-821a-22acfd2615b4",
+					"uid": "0-47e8578b-26fb-442e-821a-22acfd2615b4",
+					"name": "Get User Profile",
+					"url": "http://localhost:8080/api/users/admin/profile",
+					"description": "Get user profile",
+					"data": null,
+					"dataOptions": null,
+					"dataMode": null,
+					"headerData": [
+						{
+							"key": "Authorization",
+							"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjI3Nzk5MDE4LCJleHAiOjE2Mjc4NDIyMTh9.JbgMnWcLRpg7rEzOXLouxVyusiDV_ftSHhMsVn8IqkwmSnVATjqQOScU3IfC0wYGlxm6fnT2OMLbAXyOGTCWcw",
+							"description": "",
+							"type": "text",
+							"enabled": true
+						}
+					],
+					"method": "GET",
+					"pathVariableData": [],
+					"queryParams": [],
+					"auth": null,
+					"events": null,
+					"folder": null,
+					"responses_order": [],
+					"currentHelper": null,
+					"helperAttributes": null,
+					"collectionId": "b9ebe3bb-aaab-433e-b172-2beae0293a13",
+					"headers": "Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjI3Nzk5MDE4LCJleHAiOjE2Mjc4NDIyMTh9.JbgMnWcLRpg7rEzOXLouxVyusiDV_ftSHhMsVn8IqkwmSnVATjqQOScU3IfC0wYGlxm6fnT2OMLbAXyOGTCWcw\n",
+					"pathVariables": {}
+				},
+				{
+					"id": "4c734955-8661-4e49-8366-3c7c89f49270",
+					"uid": "0-4c734955-8661-4e49-8366-3c7c89f49270",
+					"name": "Login",
+					"url": "http://localhost:8080/api/auth/signin",
+					"description": "User sign in or login",
+					"data": [],
+					"dataOptions": {
+						"raw": {
+							"language": "json"
+						}
+					},
+					"dataMode": "raw",
+					"headerData": null,
+					"method": "POST",
+					"pathVariableData": [],
+					"queryParams": [],
+					"auth": null,
+					"events": null,
+					"folder": null,
+					"responses_order": [],
+					"currentHelper": null,
+					"helperAttributes": null,
+					"collectionId": "b9ebe3bb-aaab-433e-b172-2beae0293a13",
+					"rawModeData": "{\r\n\t\"usernameOrEmail\": \"admin\",\r\n\t\"password\": \"admin\"\r\n}",
+					"pathVariables": {}
+				},
+				{
+					"id": "b8e812dd-26a6-4aeb-b224-8083034c1429",
+					"uid": "0-b8e812dd-26a6-4aeb-b224-8083034c1429",
+					"name": "Get logged User Detail",
+					"url": "http://localhost:8080/api/users/me",
+					"description": "Get my short info",
+					"data": null,
+					"dataOptions": null,
+					"dataMode": null,
+					"headerData": [
+						{
+							"key": "Authorization",
+							"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjI3Nzk5MDE4LCJleHAiOjE2Mjc4NDIyMTh9.JbgMnWcLRpg7rEzOXLouxVyusiDV_ftSHhMsVn8IqkwmSnVATjqQOScU3IfC0wYGlxm6fnT2OMLbAXyOGTCWcw",
+							"description": "",
+							"type": "text",
+							"enabled": true
+						}
+					],
+					"method": "GET",
+					"pathVariableData": [],
+					"queryParams": [],
+					"auth": null,
+					"events": null,
+					"folder": null,
+					"responses_order": [],
+					"currentHelper": null,
+					"helperAttributes": null,
+					"collectionId": "b9ebe3bb-aaab-433e-b172-2beae0293a13",
+					"headers": "Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjI3Nzk5MDE4LCJleHAiOjE2Mjc4NDIyMTh9.JbgMnWcLRpg7rEzOXLouxVyusiDV_ftSHhMsVn8IqkwmSnVATjqQOScU3IfC0wYGlxm6fnT2OMLbAXyOGTCWcw\n",
+					"pathVariables": {}
+				}
+			]
+		}
+	],
+	"environments": [
+		{
+			"id": "da561825-de8d-4ac5-8696-d4831dd1e290",
+			"name": "My Workspace - globals",
+			"values": []
+		}
+	],
+	"headerPresets": [],
+	"globals": []
+}
