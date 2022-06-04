@@ -32,6 +32,9 @@ import com.ecom.user.repository.RoleRepository;
 import com.ecom.user.repository.UserRepository;
 import com.ecom.user.service.UserAccountVarificationService;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+
+@Tag(name = "Authentication API", description = "")
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {

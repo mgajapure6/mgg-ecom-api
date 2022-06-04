@@ -2,8 +2,6 @@ package com.ecom.ui.product.controllers;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -17,11 +15,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ecom.product.dto.ProductDTO;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+
+@Tag(name = "Product UI API", description = "")
 @Controller
 @RequestMapping("/ui/products")
 public class UIProductController {

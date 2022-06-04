@@ -1,4 +1,4 @@
-package com.ecom.orders.controllers;
+package com.ecom.cart.controllers;
 
 import javax.validation.Valid;
 
@@ -21,58 +21,65 @@ import com.ecom.app.payload.PagedResponse;
 import com.ecom.app.security.CurrentUser;
 import com.ecom.app.security.UserPrincipal;
 import com.ecom.app.utils.AppConstant;
-import com.ecom.orders.dto.OrderRequestDTO;
-import com.ecom.orders.dto.OrderResponseDTO;
-import com.ecom.orders.service.OrderService;
+import com.ecom.cart.dto.CartRequestDTO;
+import com.ecom.cart.dto.CartResponseDTO;
+import com.ecom.cart.service.CartService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-@Tag(name = "Orders API", description = "")
+@Tag(name = "Cart API", description = "")
 @RestController
-@RequestMapping("/api/v1/order")
-public class OrderController {
+@RequestMapping("/api/v1/cart")
+public class CartController {
 
 	@Autowired
-	private OrderService orderService;
+	private CartService cartService;
 
 	@GetMapping
 	@PreAuthorize("hasRole('VENDOR') or hasRole('ADMIN')")
-	public ResponseEntity<PagedResponse<OrderResponseDTO>> getAllOrder(
+	public ResponseEntity<PagedResponse<CartResponseDTO>> getAllCarts(
 			@RequestParam(value = "page", required = false, defaultValue = AppConstant.DEFAULT_PAGE_NUMBER) Integer page,
 			@RequestParam(value = "size", required = false, defaultValue = AppConstant.DEFAULT_PAGE_SIZE) Integer size) {
-		PagedResponse<OrderResponseDTO> response = orderService.getAllOrder(page, size);
+		PagedResponse<CartResponseDTO> response = cartService.getAllCart(page, size);
 
 		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
+	
+	@GetMapping("/byUser")
+	@PreAuthorize("hasRole('VENDOR') or hasRole('ADMIN') or hasRole('USER')")
+	public ResponseEntity<CartResponseDTO> getCartByUser(@CurrentUser UserPrincipal currentUser) {
+		CartResponseDTO cart = cartService.getCartByUser(currentUser);
+		return new ResponseEntity<>(cart, HttpStatus.OK);
 	}
 
 	@PostMapping
 	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-	public ResponseEntity<OrderResponseDTO> addOrder(@Valid @RequestBody OrderRequestDTO orderRequest,
+	public ResponseEntity<CartResponseDTO> addCart(@Valid @RequestBody CartRequestDTO cartRequest,
 			@CurrentUser UserPrincipal currentUser) {
-		OrderResponseDTO orderResponse = orderService.addOrder(orderRequest, currentUser);
-		return new ResponseEntity<>(orderResponse, HttpStatus.CREATED);
+		CartResponseDTO cartResponse = cartService.addCart(cartRequest, currentUser);
+		return new ResponseEntity<>(cartResponse, HttpStatus.CREATED);
 	}
 
 	@GetMapping("/{id}")
 	@PreAuthorize("hasRole('VENDOR') or hasRole('ADMIN') or hasRole('USER')")
-	public ResponseEntity<OrderResponseDTO> getOrder(@PathVariable(name = "id") Long id) {
-		OrderResponseDTO order = orderService.getOrder(id);
-		return new ResponseEntity<>(order, HttpStatus.OK);
+	public ResponseEntity<CartResponseDTO> getCart(@PathVariable(name = "id") Long id) {
+		CartResponseDTO cart = cartService.getCart(id);
+		return new ResponseEntity<>(cart, HttpStatus.OK);
 	}
 
 	@PutMapping("/{id}")
 	@PreAuthorize("hasRole('VENDOR') or hasRole('ADMIN')")
-	public ResponseEntity<OrderResponseDTO> updateOrder(@PathVariable(name = "id") Long id,
-			@Valid @RequestBody OrderRequestDTO updateOrderRequest, @CurrentUser UserPrincipal currentUser) {
-		OrderResponseDTO order = orderService.updateOrder(id, updateOrderRequest, currentUser);
-		return new ResponseEntity<>(order, HttpStatus.OK);
+	public ResponseEntity<CartResponseDTO> updateCart(@PathVariable(name = "id") Long id,
+			@Valid @RequestBody CartRequestDTO updateCartRequest, @CurrentUser UserPrincipal currentUser) {
+		CartResponseDTO cart = cartService.updateCart(id, updateCartRequest, currentUser);
+		return new ResponseEntity<>(cart, HttpStatus.OK);
 	}
 
 	@DeleteMapping("/{id}")
 	@PreAuthorize("hasRole('VENDOR') or hasRole('ADMIN')")
-	public ResponseEntity<ApiResponse> deleteOrder(@PathVariable(name = "id") Long id,
+	public ResponseEntity<ApiResponse> deleteCart(@PathVariable(name = "id") Long id,
 			@CurrentUser UserPrincipal currentUser) {
-		ApiResponse apiResponse = orderService.deleteOrder(id, currentUser);
+		ApiResponse apiResponse = cartService.deleteCart(id, currentUser);
 		return new ResponseEntity<>(apiResponse, HttpStatus.OK);
 	}
 

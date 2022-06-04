@@ -24,5 +24,7 @@ public class AppConstant {
 	public static final String ORDER_IN_PROCESS = "Proccessing";
 
 	public static final String ORDER = "Order";
+	
+	public static final String CART = "Cart";
 
 }

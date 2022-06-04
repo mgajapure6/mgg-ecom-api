@@ -24,6 +24,9 @@ import com.ecom.app.utils.AppConstant;
 import com.ecom.category.dto.CategoryDTO;
 import com.ecom.category.service.CategoryService;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+
+@Tag(name = "Category API", description = "")
 @RestController
 @RequestMapping("/api/v1/category")
 public class CategoryController {

@@ -27,6 +27,9 @@ import com.ecom.user.payload.UserSummary;
 import com.ecom.user.service.UserAccountVarificationService;
 import com.ecom.user.service.UserService;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+
+@Tag(name = "User's API", description = "")
 @RestController
 @RequestMapping("/api/users")
 public class UserController {

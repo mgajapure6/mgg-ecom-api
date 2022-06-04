@@ -25,6 +25,9 @@ import com.ecom.product.dto.ProductDTO;
 import com.ecom.product.model.Product;
 import com.ecom.product.service.ProductService;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+
+@Tag(name = "Ptoduct API", description = "")
 @RestController
 @RequestMapping("/api/v1/products")
 public class ProductController {
