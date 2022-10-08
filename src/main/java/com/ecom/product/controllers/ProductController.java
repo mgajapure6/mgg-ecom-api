@@ -1,9 +1,17 @@
 package com.ecom.product.controllers;
 
+import java.io.FileNotFoundException;
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,12 +23,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.ecom.app.exceptions.FileStorageException;
 import com.ecom.app.payload.ApiResponse;
 import com.ecom.app.payload.PagedResponse;
 import com.ecom.app.security.CurrentUser;
 import com.ecom.app.security.UserPrincipal;
 import com.ecom.app.utils.AppConstant;
+import com.ecom.file.model.FileStore;
+import com.ecom.file.service.FileIdentityGenerator;
+import com.ecom.file.service.FileStorageService;
 import com.ecom.product.dto.ProductDTO;
 import com.ecom.product.model.Product;
 import com.ecom.product.service.ProductService;
@@ -34,6 +48,9 @@ public class ProductController {
 
 	@Autowired
 	private ProductService productService;
+	
+	@Autowired
+	private FileStorageService fileStorageService;
 
 	@GetMapping
 	@PreAuthorize("hasRole('USER') or hasRole('VENDOR') or hasRole('ADMIN')")
@@ -98,5 +115,47 @@ public class ProductController {
 		ApiResponse apiResponse = productService.deleteProduct(id, currentUser);
 		return new ResponseEntity<>(apiResponse, HttpStatus.OK);
 	}
+	
+	@PostMapping("/uploadfile")
+    public ResponseEntity<FileStore> uploadSingleFile(@RequestParam("file") MultipartFile file) {
+		if(file.getSize()>1000000) {
+			throw new FileStorageException("Unable to store file greater than 1 MB");
+		}
+		long prodId = 2324;
+		try {
+			String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+	                .path("/api/v1/products/download/"+FileIdentityGenerator.productFileIdentity(prodId)+"/")
+	                .toUriString();
+			FileStore upfile = fileStorageService.storeFile(file,FileIdentityGenerator.productFileIdentity(prodId),fileDownloadUri);
+	        return ResponseEntity.status(HttpStatus.OK).body(upfile);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new FileStorageException("Unable to store file", e);
+		}
+    }
+	
+	@GetMapping("/files")
+    public ResponseEntity<List<FileStore>> loadAllFiles() throws FileNotFoundException {
+        return ResponseEntity.ok()
+                .body(fileStorageService.getAllFiles());
+    }
+	
+	@GetMapping("/download/{productIdentity}/{fileName:.+}")
+    public ResponseEntity<Resource> loadFileAsResource(@PathVariable("productIdentity") String productIdentity, 
+    		@PathVariable("fileName") String fileName) throws FileNotFoundException {
+		try {
+			FileStore fileStore = fileStorageService.getFileByIdentityAndFileName(productIdentity, fileName);
+	        ByteArrayResource resource = new ByteArrayResource(fileStore.getFile());
+	        return ResponseEntity.ok()
+	                .contentType(MediaType.IMAGE_JPEG)
+	                .contentLength(resource.contentLength())
+	                .header(HttpHeaders.CONTENT_DISPOSITION,ContentDisposition.attachment().filename(fileStore.getFileName())
+	                .build().toString())
+	                .body(resource);
+		} catch (Exception e) {
+			throw new FileStorageException("File not found", e);
+		}
+        
+    }
 
 }

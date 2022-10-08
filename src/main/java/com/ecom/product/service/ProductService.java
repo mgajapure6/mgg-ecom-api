@@ -1,5 +1,6 @@
 package com.ecom.product.service;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -16,6 +17,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.ecom.app.exceptions.EcommApiException;
 import com.ecom.app.exceptions.ResourceNotFoundException;
@@ -28,6 +30,8 @@ import com.ecom.app.utils.AppMessages;
 import com.ecom.app.utils.AppUtil;
 import com.ecom.category.model.Category;
 import com.ecom.category.repository.CategoryRepository;
+import com.ecom.file.service.FileIdentityGenerator;
+import com.ecom.file.service.FileStorageService;
 import com.ecom.product.dto.ProductDTO;
 import com.ecom.product.mapper.ProductMapper;
 import com.ecom.product.model.Product;
@@ -57,6 +61,9 @@ public class ProductService {
 
 	@Autowired
 	private UserRepository userRepository;
+
+	@Autowired
+	private FileStorageService fileStorageService;
 
 	public PagedResponse<Product> getAllProducts(Integer page, Integer size) {
 		AppUtil.validatePageNumberAndSize(page, size);
@@ -126,6 +133,17 @@ public class ProductService {
 			product.setCategory(category);
 			product = productRepository.save(product);
 
+			// upload images
+			if (!productRequest.getImageFiles().isEmpty()) {
+				try {
+					fileStorageService.storeAllFile(productRequest.getImageFiles(),
+							FileIdentityGenerator.productFileIdentity(product.getId()), ServletUriComponentsBuilder
+									.fromCurrentContextPath().path("/api/v1/products/download/").toUriString());
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+
 			for (ProductAttribute pa : product.getProdAttributes()) {
 				pa.setProduct(product);
 				productAttributeRepository.save(pa);
@@ -170,12 +188,12 @@ public class ProductService {
 			Product product = productRepository.findById(newProductRequest.getId())
 					.orElseThrow(() -> new ResourceNotFoundException(AppConstant.PRODUCT, AppConstant.ID,
 							newProductRequest.getId()));
-			
+
 			// Fetch the category by product category ID
 			Category category = categoryRepository.findById(newProductRequest.getCategoryId())
 					.orElseThrow(() -> new ResourceNotFoundException(AppConstant.CATEGORY, AppConstant.ID,
 							newProductRequest.getCategoryId()));
-			
+
 			// Get list of old products attributes and remove it from product
 			Set<ProductAttribute> oldProdAttrs = new HashSet<>(productAttributeRepository.findByProduct(product));
 			product.removeAllProdAttributes(oldProdAttrs);
