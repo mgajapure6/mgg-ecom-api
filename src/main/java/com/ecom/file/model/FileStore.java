@@ -18,6 +18,9 @@ public class FileStore {
 
 	@Column
 	private String fileName;
+	
+	@Column
+	private String originalFileName;
 
 	@Column
 	private String fileType;
@@ -38,11 +41,12 @@ public class FileStore {
 	@Column
 	private byte[] file;
 
-	public FileStore(Long id, String fileName, String fileType, Long fileSize, String filePath, String fileURI,
-			String fileIdentity, byte[] file) {
+	public FileStore(Long id, String fileName, String originalFileName, String fileType, Long fileSize, String filePath,
+			String fileURI, String fileIdentity, byte[] file) {
 		super();
 		this.id = id;
 		this.fileName = fileName;
+		this.originalFileName = originalFileName;
 		this.fileType = fileType;
 		this.fileSize = fileSize;
 		this.filePath = filePath;
@@ -69,6 +73,14 @@ public class FileStore {
 
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
+	}
+
+	public String getOriginalFileName() {
+		return originalFileName;
+	}
+
+	public void setOriginalFileName(String originalFileName) {
+		this.originalFileName = originalFileName;
 	}
 
 	public String getFileType() {

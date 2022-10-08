@@ -1,6 +1,7 @@
 package com.ecom.file.service;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,13 +19,15 @@ public class FileStorageService {
 	private FileStoreRepository fileStoreRepository;
 
 	public FileStore storeFile(MultipartFile file, String identity, String fileDownloadUri) throws IOException {
+		String newFileName = file.getOriginalFilename()+"_"+new Timestamp(System.currentTimeMillis());
 		FileStore store = new FileStore();
 		store.setFile(file.getBytes());
 		store.setFileIdentity(identity);
-		store.setFileName(file.getOriginalFilename());
+		store.setFileName(newFileName);
+		store.setOriginalFileName(file.getOriginalFilename());
 		store.setFileSize(file.getSize());
 		store.setFileURI(identity);
-		store.setFileURI(fileDownloadUri + file.getOriginalFilename());
+		store.setFileURI(fileDownloadUri + newFileName);
 		return fileStoreRepository.save(store);
 	}
 
@@ -32,13 +35,15 @@ public class FileStorageService {
 			throws IOException {
 		List<FileStore> storeFiles = new ArrayList<>();
 		for (MultipartFile file : files) {
+			String newFileName = file.getOriginalFilename()+"_"+new Timestamp(System.currentTimeMillis());
 			FileStore store = new FileStore();
 			store.setFile(file.getBytes());
 			store.setFileIdentity(identity);
-			store.setFileName(file.getOriginalFilename());
+			store.setFileName(newFileName);
+			store.setOriginalFileName(file.getOriginalFilename());
 			store.setFileSize(file.getSize());
 			store.setFileURI(identity);
-			store.setFileURI(fileDownloadUri + "/" + file.getOriginalFilename());
+			store.setFileURI(fileDownloadUri + "/" + newFileName);
 			storeFiles.add(store);
 		}
 		return fileStoreRepository.saveAll(storeFiles);
