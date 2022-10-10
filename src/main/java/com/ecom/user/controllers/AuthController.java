@@ -12,7 +12,9 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ecom.app.exceptions.AppException;
 import com.ecom.app.exceptions.EcommApiException;
+import com.ecom.app.exceptions.UnauthorizedException;
 import com.ecom.app.payload.ApiResponse;
 import com.ecom.app.security.JwtTokenProvider;
 import com.ecom.user.model.Role;
@@ -28,8 +31,10 @@ import com.ecom.user.model.User;
 import com.ecom.user.payload.JwtAuthenticationResponse;
 import com.ecom.user.payload.LoginRequest;
 import com.ecom.user.payload.SignUpRequest;
+import com.ecom.user.payload.TokenRequest;
 import com.ecom.user.repository.RoleRepository;
 import com.ecom.user.repository.UserRepository;
+import com.ecom.user.service.CustomUserDetailsService;
 import com.ecom.user.service.UserAccountVarificationService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -57,6 +62,9 @@ public class AuthController {
 	
 	@Autowired
 	private UserAccountVarificationService userAccountVarificationService;
+	
+	@Autowired
+	private CustomUserDetailsService customUserDetailsService;
 
 	@PostMapping("/signin")
 	public ResponseEntity<JwtAuthenticationResponse> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
@@ -67,6 +75,22 @@ public class AuthController {
 
 		String jwt = jwtTokenProvider.generateToken(authentication);
 		return ResponseEntity.ok(new JwtAuthenticationResponse(jwt));
+	}
+	
+	@PostMapping("/signin-with-token")
+	public ResponseEntity<JwtAuthenticationResponse> authenticateUserWithToken(@Valid @RequestBody TokenRequest tokenRequest) {
+		String jwt = tokenRequest.getAccessToken();
+		if (StringUtils.hasText(jwt) && jwtTokenProvider.validateToken(jwt)) {
+			String username = jwtTokenProvider.getUsernameFromJWT(jwt);
+			UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
+			UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+					userDetails, null, userDetails.getAuthorities());
+			SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+			String newJwt = jwtTokenProvider.generateToken(authenticationToken);
+			return ResponseEntity.ok(new JwtAuthenticationResponse(newJwt));
+		}
+		throw new UnauthorizedException("Invalid Token");
+		
 	}
 
 	@PostMapping("/signup")
