@@ -15,6 +15,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,7 +42,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Tag(name = "Authentication API", description = "")
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/auth")
 public class AuthController {
 	private static final String USER_ROLE_NOT_SET = "User role not set";
 
@@ -59,10 +60,10 @@ public class AuthController {
 
 	@Autowired
 	private JwtTokenProvider jwtTokenProvider;
-	
+
 	@Autowired
 	private UserAccountVarificationService userAccountVarificationService;
-	
+
 	@Autowired
 	private CustomUserDetailsService customUserDetailsService;
 
@@ -76,9 +77,10 @@ public class AuthController {
 		String jwt = jwtTokenProvider.generateToken(authentication);
 		return ResponseEntity.ok(new JwtAuthenticationResponse(jwt));
 	}
-	
+
 	@PostMapping("/signin-with-token")
-	public ResponseEntity<JwtAuthenticationResponse> authenticateUserWithToken(@Valid @RequestBody TokenRequest tokenRequest) {
+	public ResponseEntity<JwtAuthenticationResponse> authenticateUserWithToken(
+			@Valid @RequestBody TokenRequest tokenRequest) {
 		String jwt = tokenRequest.getAccessToken();
 		if (StringUtils.hasText(jwt) && jwtTokenProvider.validateToken(jwt)) {
 			String username = jwtTokenProvider.getUsernameFromJWT(jwt);
@@ -90,7 +92,7 @@ public class AuthController {
 			return ResponseEntity.ok(new JwtAuthenticationResponse(newJwt));
 		}
 		throw new UnauthorizedException("Invalid Token");
-		
+
 	}
 
 	@PostMapping("/signup")
@@ -114,7 +116,6 @@ public class AuthController {
 		String password = passwordEncoder.encode(signUpRequest.getPassword());
 
 		User user = new User(firstName, lastName, username, email, password);
-		
 
 		List<Role> roles = new ArrayList<>();
 
@@ -131,18 +132,25 @@ public class AuthController {
 		}
 
 		user.setRoles(roles);
-		
+
 		user.setActive(true);
 		user.setAccountVerified(false);
 		user.setAcccountVerificationCode(userAccountVarificationService.getVerificationCode(user));
 
 		User newUser = userRepository.save(user);
-		
+
 		userAccountVarificationService.sendAccountVerificationEmail(newUser);
 
 //		URI location = ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/users/{userId}")
 //				.buildAndExpand(result.getId()).toUri();
 
 		return ResponseEntity.ok().body(new ApiResponse(Boolean.TRUE, "User registered successfully"));
+	}
+	
+	@GetMapping("/logout")
+	public boolean logout() {
+		SecurityContextHolder.clearContext();
+		System.out.println("logout done:: process ops for logout");
+		return true;
 	}
 }

@@ -57,10 +57,18 @@ public class SecutiryConfig extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests().antMatchers("/h2-console/**").permitAll();
 		http.headers().frameOptions().disable();// for h2 console
 
-		http.cors().and().csrf().disable().exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
-				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
-				.antMatchers(HttpMethod.GET, "/api/**").permitAll().antMatchers(HttpMethod.POST, "/api/auth/**")
-				.permitAll().antMatchers(WHITELIST_API).permitAll().anyRequest().authenticated();
+		http
+			.cors()
+			.and()
+			.csrf().disable()
+			.exceptionHandling().authenticationEntryPoint(unauthorizedHandler)
+			.and()
+			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+			.and()
+			.authorizeRequests().antMatchers("/auth/**").permitAll()
+			.antMatchers(WHITELIST_API).permitAll().anyRequest().authenticated()
+			.and()
+			.logout().logoutSuccessUrl("/auth/logout").invalidateHttpSession(true).deleteCookies("JSESSIONID");
 
 		http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
