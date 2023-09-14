@@ -1,1 +1,1 @@
-web: java -jar target/sample-java-mvn-*.jar
+web: java -jar target/ecommerce-*.jar
