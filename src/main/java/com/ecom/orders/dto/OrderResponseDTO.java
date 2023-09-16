@@ -6,7 +6,7 @@ import java.util.Set;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import com.ecom.product.dto.ProductDTO;
+import com.ecom.product.dto.ProductResponseDTO;
 
 public class OrderResponseDTO {
 
@@ -23,13 +23,13 @@ public class OrderResponseDTO {
 	private String orderStatus;
 
 	@NotNull
-	private Set<ProductDTO> products;
+	private Set<ProductResponseDTO> products;
 
 	@NotNull
 	private Long userId;
 
 	public OrderResponseDTO(@NotNull Long id, @Size(max = 50) String orderNum, @NotNull Instant orderDate,
-			@Size(max = 50) String orderStatus, @NotNull Set<ProductDTO> products, @NotNull Long userId) {
+			@Size(max = 50) String orderStatus, @NotNull Set<ProductResponseDTO> products, @NotNull Long userId) {
 		super();
 		this.id = id;
 		this.orderNum = orderNum;
@@ -75,11 +75,11 @@ public class OrderResponseDTO {
 		this.orderStatus = orderStatus;
 	}
 
-	public Set<ProductDTO> getProducts() {
+	public Set<ProductResponseDTO> getProducts() {
 		return products;
 	}
 
-	public void setProducts(Set<ProductDTO> products) {
+	public void setProducts(Set<ProductResponseDTO> products) {
 		this.products = products;
 	}
 

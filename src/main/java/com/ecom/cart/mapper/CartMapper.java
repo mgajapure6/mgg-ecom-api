@@ -12,7 +12,7 @@ import com.ecom.cart.dto.CartRequestDTO;
 import com.ecom.cart.dto.CartResponseDTO;
 import com.ecom.cart.model.Cart;
 import com.ecom.cart.model.CartProduct;
-import com.ecom.product.dto.ProductDTO;
+import com.ecom.product.dto.ProductResponseDTO;
 
 @Service
 public class CartMapper {
@@ -24,7 +24,7 @@ public class CartMapper {
 		return cart;
 	}
 
-	public static CartResponseDTO mapToCartResponseDTO(Cart newCart, Set<ProductDTO> products) {
+	public static CartResponseDTO mapToCartResponseDTO(Cart newCart, Set<ProductResponseDTO> products) {
 		CartResponseDTO cartDTO = new CartResponseDTO();
 		cartDTO.setId(newCart.getId());
 		cartDTO.setProducts(products);

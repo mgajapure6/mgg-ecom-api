@@ -2,24 +2,22 @@ package com.ecom.product.dto;
 
 import javax.validation.constraints.NotBlank;
 
-public class ProductAttributeDTO {
+public class ProductAttributeResponseDTO {
 
 	private Long id;
 
-	@NotBlank
 	private String name;
 
-	@NotBlank
 	private String value;
 
-	public ProductAttributeDTO(Long id, @NotBlank String name, @NotBlank String value) {
+	public ProductAttributeResponseDTO(Long id, @NotBlank String name, @NotBlank String value) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.value = value;
 	}
 
-	public ProductAttributeDTO() {
+	public ProductAttributeResponseDTO() {
 		super();
 	}
 
@@ -49,7 +47,7 @@ public class ProductAttributeDTO {
 
 	@Override
 	public String toString() {
-		return "ProductAttributeDTO [id=" + id + ", name=" + name + ", value=" + value + "]";
+		return "ProductAttributeResponseDTO [id=" + id + ", name=" + name + ", value=" + value + "]";
 	}
 
 }

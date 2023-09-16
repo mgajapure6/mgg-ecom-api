@@ -17,9 +17,6 @@ public class FileStore {
 	private Long id;
 
 	@Column
-	private String fileName;
-	
-	@Column
 	private String originalFileName;
 
 	@Column
@@ -29,34 +26,33 @@ public class FileStore {
 	private Long fileSize;
 
 	@Column
-	private String filePath;
-
-	@Column
-	private String fileURI;
-
-	@Column
 	private String fileIdentity;
+
+	@Column
+	private String entity;
+
+	@Column
+	private Long entityId;
 
 	@Lob
 	@Column
 	private byte[] file;
 
-	public FileStore(Long id, String fileName, String originalFileName, String fileType, Long fileSize, String filePath,
-			String fileURI, String fileIdentity, byte[] file) {
+	public FileStore() {
+		super();
+	}
+
+	public FileStore(Long id, String originalFileName, String fileType, Long fileSize, String fileIdentity,
+			String entity, Long entityId, byte[] file) {
 		super();
 		this.id = id;
-		this.fileName = fileName;
 		this.originalFileName = originalFileName;
 		this.fileType = fileType;
 		this.fileSize = fileSize;
-		this.filePath = filePath;
-		this.fileURI = fileURI;
 		this.fileIdentity = fileIdentity;
+		this.entity = entity;
+		this.entityId = entityId;
 		this.file = file;
-	}
-
-	public FileStore() {
-		super();
 	}
 
 	public Long getId() {
@@ -65,14 +61,6 @@ public class FileStore {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public String getFileName() {
-		return fileName;
-	}
-
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
 	}
 
 	public String getOriginalFileName() {
@@ -99,28 +87,28 @@ public class FileStore {
 		this.fileSize = fileSize;
 	}
 
-	public String getFilePath() {
-		return filePath;
-	}
-
-	public void setFilePath(String filePath) {
-		this.filePath = filePath;
-	}
-
-	public String getFileURI() {
-		return fileURI;
-	}
-
-	public void setFileURI(String fileURI) {
-		this.fileURI = fileURI;
-	}
-
 	public String getFileIdentity() {
 		return fileIdentity;
 	}
 
 	public void setFileIdentity(String fileIdentity) {
 		this.fileIdentity = fileIdentity;
+	}
+
+	public String getEntity() {
+		return entity;
+	}
+
+	public void setEntity(String entity) {
+		this.entity = entity;
+	}
+
+	public Long getEntityId() {
+		return entityId;
+	}
+
+	public void setEntityId(Long entityId) {
+		this.entityId = entityId;
 	}
 
 	public byte[] getFile() {

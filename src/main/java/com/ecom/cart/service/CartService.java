@@ -66,7 +66,7 @@ public class CartService {
 						.collect(Collectors.toList());
 				List<Product> products = productRepository.findByIdIn(productIds);
 				CartResponseDTO cartResponseDTO = CartMapper.mapToCartResponseDTO(cart,
-						products.stream().map(p -> ProductMapper.mapToProductDTO(p)).collect(Collectors.toSet()));
+						products.stream().map(p -> ProductMapper.mapProductToProductResponseDTO(p)).collect(Collectors.toSet()));
 				list.add(cartResponseDTO);
 			}
 		} else {
@@ -96,7 +96,7 @@ public class CartService {
 			List<Product> products = productRepository.findByIdIn(productIds);
 
 			CartResponseDTO cartResponseDTO = CartMapper.mapToCartResponseDTO(newCart,
-					products.stream().map(p -> ProductMapper.mapToProductDTO(p)).collect(Collectors.toSet()));
+					products.stream().map(p -> ProductMapper.mapProductToProductResponseDTO(p)).collect(Collectors.toSet()));
 
 			return cartResponseDTO;
 		}
@@ -112,7 +112,7 @@ public class CartService {
 		List<Product> products = productRepository.findByIdIn(productIds);
 
 		CartResponseDTO cartResponseDTO = CartMapper.mapToCartResponseDTO(cart,
-				products.stream().map(p -> ProductMapper.mapToProductDTO(p)).collect(Collectors.toSet()));
+				products.stream().map(p -> ProductMapper.mapProductToProductResponseDTO(p)).collect(Collectors.toSet()));
 		return cartResponseDTO;
 	}
 
@@ -148,7 +148,7 @@ public class CartService {
 			List<Product> products = productRepository.findByIdIn(productIds);
 
 			CartResponseDTO cartResponseDTO = CartMapper.mapToCartResponseDTO(cart,
-					products.stream().map(p -> ProductMapper.mapToProductDTO(p)).collect(Collectors.toSet()));
+					products.stream().map(p -> ProductMapper.mapProductToProductResponseDTO(p)).collect(Collectors.toSet()));
 			return cartResponseDTO;
 		}
 
@@ -176,7 +176,7 @@ public class CartService {
 		List<Product> products = productRepository.findByIdIn(productIds);
 
 		CartResponseDTO cartResponseDTO = CartMapper.mapToCartResponseDTO(cart,
-				products.stream().map(p -> ProductMapper.mapToProductDTO(p)).collect(Collectors.toSet()));
+				products.stream().map(p -> ProductMapper.mapProductToProductResponseDTO(p)).collect(Collectors.toSet()));
 		return cartResponseDTO;
 	}
 

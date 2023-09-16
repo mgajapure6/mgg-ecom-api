@@ -37,6 +37,12 @@ public class Category extends DateAudit implements Serializable {
 	@NotBlank
 	@Column(name = "name")
 	private String name;
+	
+	@Column(name = "parent_category_id")
+	private Long parentCategoryId;
+	
+	@Column(name = "image_name")
+	private String imageName;
 
 	@OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<Product> products = new HashSet<>();
@@ -46,25 +52,28 @@ public class Category extends DateAudit implements Serializable {
 	@JoinColumn(name = "user_id")
 	private User user;
 
-	public Category(Long id, @NotBlank String name, Set<Product> products, User user) {
+	public Category(Long id, @NotBlank String name, Long parentCategoryId, Set<Product> products, User user) {
 		super();
 		this.id = id;
 		this.name = name;
+		this.parentCategoryId = parentCategoryId;
 		this.products = products;
 		this.user = user;
 	}
 
-	public Category(Long id, @NotBlank String name, Set<Product> products) {
+	public Category(Long id, @NotBlank String name, Long parentCategoryId, Set<Product> products) {
 		super();
 		this.id = id;
 		this.name = name;
+		this.parentCategoryId = parentCategoryId;
 		this.products = products;
 	}
 
-	public Category(Long id, @NotBlank String name) {
+	public Category(Long id, @NotBlank String name, Long parentCategoryId) {
 		super();
 		this.id = id;
 		this.name = name;
+		this.parentCategoryId = parentCategoryId;
 	}
 
 	public Category() {
@@ -85,6 +94,22 @@ public class Category extends DateAudit implements Serializable {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public Long getParentCategoryId() {
+		return parentCategoryId;
+	}
+
+	public void setParentCategoryId(Long parentCategoryId) {
+		this.parentCategoryId = parentCategoryId;
+	}
+
+	public String getImageName() {
+		return imageName;
+	}
+
+	public void setImageName(String imageName) {
+		this.imageName = imageName;
 	}
 
 	public Set<Product> getProducts() {

@@ -26,5 +26,7 @@ public class AppConstant {
 	public static final String ORDER = "Order";
 	
 	public static final String CART = "Cart";
+	
+	public static final String IMAGE_DOWNLOAD_BASE_URL = "/api/v1/files/download";
 
 }

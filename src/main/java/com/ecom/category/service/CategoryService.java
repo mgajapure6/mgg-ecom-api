@@ -1,5 +1,6 @@
 package com.ecom.category.service;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -23,10 +24,12 @@ import com.ecom.app.security.UserPrincipal;
 import com.ecom.app.utils.AppConstant;
 import com.ecom.app.utils.AppMessages;
 import com.ecom.app.utils.AppUtil;
-import com.ecom.category.dto.CategoryDTO;
+import com.ecom.category.dto.CategoryRequestDTO;
+import com.ecom.category.dto.CategoryResponseDTO;
 import com.ecom.category.mapper.CategoryMapper;
 import com.ecom.category.model.Category;
 import com.ecom.category.repository.CategoryRepository;
+import com.ecom.file.service.FileStorageService;
 import com.ecom.product.model.Product;
 import com.ecom.user.model.RoleName;
 import com.ecom.user.model.User;
@@ -40,50 +43,82 @@ public class CategoryService {
 
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired 
+	private FileStorageService fileStorageService;
 
-	public PagedResponse<CategoryDTO> getAllCategory(Integer page, Integer size) {
+	public PagedResponse<CategoryResponseDTO> getAllCategory(Integer page, Integer size) {
 		AppUtil.validatePageNumberAndSize(page, size);
 		Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, AppConstant.CREATED_AT);
 		Page<Category> categories = categoryRepository.findAll(pageable);
-		List<CategoryDTO> content = categories.getNumberOfElements() == 0 ? Collections.emptyList()
-				: categories.getContent().stream().map(c -> CategoryMapper.mapToCategoryDTO(c))
-						.collect(Collectors.toList());
+		List<CategoryResponseDTO> content = categories.getNumberOfElements() == 0 ? Collections.emptyList()
+				: categories.getContent().stream().map(c -> {
+					if(c.getImageName() != null) {
+						String identity = AppConstant.CATEGORY.toLowerCase()+"_"+c.getId();
+						String imageUrl = AppConstant.IMAGE_DOWNLOAD_BASE_URL+"/"+AppConstant.CATEGORY.toLowerCase()+"/"+identity+"/"+c.getImageName();
+						return CategoryMapper.mapToCategoryResponseDTO(c, imageUrl);
+					}
+					return CategoryMapper.mapToCategoryResponseDTO(c, "");
+					
+				}).collect(Collectors.toList());
 		return new PagedResponse<>(content, categories.getNumber(), categories.getSize(), categories.getTotalElements(),
 				categories.getTotalPages(), categories.isLast());
 	}
 
-	public CategoryDTO addCategory(CategoryDTO categoryRequest, UserPrincipal currentUser) {
+	public CategoryResponseDTO addCategory(CategoryRequestDTO categoryRequest, UserPrincipal currentUser) {
 		User user = userRepository.findById(currentUser.getId())
 				.orElseThrow(() -> new ResourceNotFoundException(AppConstant.USER, AppConstant.ID, 1L));
 
 		Category category = CategoryMapper.mapToCategory(categoryRequest);
 		category.setUser(user);
 		Category newCategory = categoryRepository.save(category);
-		CategoryDTO categoryResponse = CategoryMapper.mapToCategoryDTO(newCategory);
+		CategoryResponseDTO categoryResponse = CategoryMapper.mapToCategoryResponseDTO(newCategory, "");
+		if(categoryResponse != null && categoryRequest.getCategoryImage() != null && categoryResponse.getId() > 0) {
+			try {
+				fileStorageService.storeFile(categoryRequest.getCategoryImage(), AppConstant.CATEGORY.toLowerCase(), categoryResponse.getId(), categoryRequest.getCategoryImage().getOriginalFilename());
+				String identity = AppConstant.CATEGORY.toLowerCase()+"_"+categoryResponse.getId();
+				String imageUrl = AppConstant.IMAGE_DOWNLOAD_BASE_URL+"/"+AppConstant.CATEGORY.toLowerCase()+"/"+identity+"/"+category.getImageName();
+				categoryResponse.setImageUrl(imageUrl);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 		return categoryResponse;
 	}
 
-	public CategoryDTO getCategory(Long id) {
+	public CategoryResponseDTO getCategory(Long id) {
 		Category category = categoryRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException(AppConstant.CATEGORY, AppConstant.ID, id));
-		CategoryDTO categoryDTO = CategoryMapper.mapToCategoryDTO(category);
-		return categoryDTO;
+		String identity = AppConstant.CATEGORY.toLowerCase()+"_"+category.getId();
+		String imageUrl = AppConstant.IMAGE_DOWNLOAD_BASE_URL+"/"+AppConstant.CATEGORY.toLowerCase()+"/"+identity+"/"+category.getImageName();
+		CategoryResponseDTO categoryResponseDTO = CategoryMapper.mapToCategoryResponseDTO(category, imageUrl);
+		return categoryResponseDTO;
 	}
 
-	public CategoryDTO updateCategory(Long id, @Valid CategoryDTO newCategoryRequest, UserPrincipal currentUser) {
+	public CategoryResponseDTO updateCategory(Long id, @Valid CategoryRequestDTO newCategoryRequest, UserPrincipal currentUser) {
 		User user = userRepository.findById(currentUser.getId())
 				.orElseThrow(() -> new ResourceNotFoundException(AppConstant.USER, AppConstant.ID, 1L));
+		
 		Category category = categoryRepository.findById(newCategoryRequest.getId()).orElseThrow(
 				() -> new ResourceNotFoundException(AppConstant.CATEGORY, AppConstant.ID, newCategoryRequest.getId()));
+		
 		if (currentUser.getAuthorities().contains(new SimpleGrantedAuthority(RoleName.ROLE_ADMIN.toString()))) {
+			String oldImageName = category.getImageName();
 			Set<Product> products = category.getProducts();
 			category = CategoryMapper.mapToCategory(newCategoryRequest);
 			category.removeAllProducts(products);
 			category.addAllProducts(products);
 			category.setUser(user);
 			category = categoryRepository.save(category);
-			CategoryDTO categoryDTO = CategoryMapper.mapToCategoryDTO(category);
-			return categoryDTO;
+			
+			try {
+				fileStorageService.updateFile(newCategoryRequest.getCategoryImage(), AppConstant.CATEGORY.toLowerCase(), category.getId(), oldImageName);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+			CategoryResponseDTO categoryResponseDTO = CategoryMapper.mapToCategoryResponseDTO(category, category.getImageName());
+			return categoryResponseDTO;
 		}
 		ApiResponse apiResponse = new ApiResponse(Boolean.FALSE, AppMessages.ACCESS_DENIED);
 		throw new UnauthorizedException(apiResponse);
@@ -94,6 +129,7 @@ public class CategoryService {
 				.orElseThrow(() -> new ResourceNotFoundException(AppConstant.CATEGORY, AppConstant.ID, categoryId));
 		if (currentUser.getAuthorities().contains(new SimpleGrantedAuthority(RoleName.ROLE_ADMIN.toString()))) {
 			category.removeAllProducts(category.getProducts());
+			fileStorageService.deleteFile(AppConstant.CATEGORY.toLowerCase(), categoryId, category.getImageName());
 			categoryRepository.deleteById(categoryId);
 			return new ApiResponse(Boolean.TRUE, AppMessages.CATEGORY_DELETE_SUCCESS);
 		}

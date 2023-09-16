@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -21,7 +22,8 @@ import com.ecom.app.payload.PagedResponse;
 import com.ecom.app.security.CurrentUser;
 import com.ecom.app.security.UserPrincipal;
 import com.ecom.app.utils.AppConstant;
-import com.ecom.category.dto.CategoryDTO;
+import com.ecom.category.dto.CategoryRequestDTO;
+import com.ecom.category.dto.CategoryResponseDTO;
 import com.ecom.category.service.CategoryService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -36,34 +38,34 @@ public class CategoryController {
 
 	@GetMapping
 	// @PreAuthorize("hasRole('USER') or hasRole('VENDOR') or hasRole('ADMIN')")
-	public ResponseEntity<PagedResponse<CategoryDTO>> getAllCategory(
+	public ResponseEntity<PagedResponse<CategoryResponseDTO>> getAllCategory(
 			@RequestParam(value = "page", required = false, defaultValue = AppConstant.DEFAULT_PAGE_NUMBER) Integer page,
 			@RequestParam(value = "size", required = false, defaultValue = AppConstant.DEFAULT_PAGE_SIZE) Integer size) {
-		PagedResponse<CategoryDTO> response = categoryService.getAllCategory(page, size);
+		PagedResponse<CategoryResponseDTO> response = categoryService.getAllCategory(page, size);
 
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
 	@PostMapping
 	@PreAuthorize("hasRole('ADMIN')")
-	public ResponseEntity<CategoryDTO> addCategory(@Valid @RequestBody CategoryDTO categoryRequest,
+	public ResponseEntity<CategoryResponseDTO> addCategory(@Valid @ModelAttribute CategoryRequestDTO categoryRequest,
 			@CurrentUser UserPrincipal currentUser) {
-		CategoryDTO categoryResponse = categoryService.addCategory(categoryRequest, currentUser);
+		CategoryResponseDTO categoryResponse = categoryService.addCategory(categoryRequest, currentUser);
 		return new ResponseEntity<>(categoryResponse, HttpStatus.CREATED);
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<CategoryDTO> getCategory(@PathVariable(name = "id") Long id) {
-		CategoryDTO category = categoryService.getCategory(id);
-		return new ResponseEntity<>(category, HttpStatus.OK);
+	public ResponseEntity<CategoryResponseDTO> getCategory(@PathVariable(name = "id") Long id) {
+		CategoryResponseDTO categoryResponse = categoryService.getCategory(id);
+		return new ResponseEntity<>(categoryResponse, HttpStatus.OK);
 	}
 
 	@PutMapping("/{id}")
 	@PreAuthorize("hasRole('ADMIN')")
-	public ResponseEntity<CategoryDTO> updateCategory(@PathVariable(name = "id") Long id,
-			@Valid @RequestBody CategoryDTO newCategoryRequest, @CurrentUser UserPrincipal currentUser) {
-		CategoryDTO category = categoryService.updateCategory(id, newCategoryRequest, currentUser);
-		return new ResponseEntity<>(category, HttpStatus.OK);
+	public ResponseEntity<CategoryResponseDTO> updateCategory(@PathVariable(name = "id") Long id,
+			@Valid @RequestBody CategoryRequestDTO newCategoryRequest, @CurrentUser UserPrincipal currentUser) {
+		CategoryResponseDTO categoryResponse = categoryService.updateCategory(id, newCategoryRequest, currentUser);
+		return new ResponseEntity<>(categoryResponse, HttpStatus.OK);
 	}
 
 	@DeleteMapping("/{id}")

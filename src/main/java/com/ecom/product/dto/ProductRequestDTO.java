@@ -1,15 +1,12 @@
 package com.ecom.product.dto;
 
-import java.util.List;
 import java.util.Set;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import org.springframework.web.multipart.MultipartFile;
-
-public class ProductDTO {
+public class ProductRequestDTO {
 
 	private Long id;
 
@@ -40,13 +37,10 @@ public class ProductDTO {
 	private Double prodQuantity;
 
 	@NotNull
-	private Set<ProductAttributeDTO> prodAttributes;
+	private Set<ProductAttributeRequestDTO> prodAttributes;
 
 	@NotNull
-	private Set<ProductPhotoDTO> prodPhotos;
-	
-	@NotNull
-	private List<MultipartFile> imageFiles;
+	private Set<ProductPhotoRequestDTO> prodPhotos;
 
 	@NotNull
 	private Long categoryId;
@@ -54,10 +48,10 @@ public class ProductDTO {
 	@NotNull
 	private Long userId;
 
-	public ProductDTO(Long id, @NotBlank @Size(max = 40) String prodName, @NotBlank @Size(max = 1000) String prodDesc,
+	public ProductRequestDTO(Long id, @NotBlank @Size(max = 40) String prodName, @NotBlank @Size(max = 1000) String prodDesc,
 			@Size(max = 40) String prodSku, @Size(max = 40) String prodModel, @Size(max = 500) String prodTags,
 			@NotNull Double prodPrice, @NotNull Double prodSpecialPrice, @NotNull Double prodQuantity,
-			@NotNull Set<ProductAttributeDTO> prodAttributes, @NotNull Set<ProductPhotoDTO> prodPhotos,
+			@NotNull Set<ProductAttributeRequestDTO> prodAttributes, @NotNull Set<ProductPhotoRequestDTO> prodPhotos,
 			@NotNull Long categoryId, @NotNull Long userId) {
 		super();
 		this.id = id;
@@ -75,7 +69,7 @@ public class ProductDTO {
 		this.userId = userId;
 	}
 
-	public ProductDTO(Long id, @NotBlank @Size(max = 40) String prodName, @NotBlank @Size(max = 1000) String prodDesc,
+	public ProductRequestDTO(Long id, @NotBlank @Size(max = 40) String prodName, @NotBlank @Size(max = 1000) String prodDesc,
 			@Size(max = 40) String prodSku, @Size(max = 40) String prodModel, @Size(max = 500) String prodTags,
 			@NotNull Double prodPrice, @NotNull Double prodSpecialPrice, @NotNull Double prodQuantity) {
 		super();
@@ -90,7 +84,7 @@ public class ProductDTO {
 		this.prodQuantity = prodQuantity;
 	}
 
-	public ProductDTO() {
+	public ProductRequestDTO() {
 		super();
 	}
 
@@ -166,19 +160,19 @@ public class ProductDTO {
 		this.prodQuantity = prodQuantity;
 	}
 
-	public Set<ProductAttributeDTO> getProdAttributes() {
+	public Set<ProductAttributeRequestDTO> getProdAttributes() {
 		return prodAttributes;
 	}
 
-	public void setProdAttributes(Set<ProductAttributeDTO> prodAttributes) {
+	public void setProdAttributes(Set<ProductAttributeRequestDTO> prodAttributes) {
 		this.prodAttributes = prodAttributes;
 	}
 
-	public Set<ProductPhotoDTO> getProdPhotos() {
+	public Set<ProductPhotoRequestDTO> getProdPhotos() {
 		return prodPhotos;
 	}
 
-	public void setProdPhotos(Set<ProductPhotoDTO> prodPhotos) {
+	public void setProdPhotos(Set<ProductPhotoRequestDTO> prodPhotos) {
 		this.prodPhotos = prodPhotos;
 	}
 
@@ -196,14 +190,6 @@ public class ProductDTO {
 
 	public void setUserId(Long userId) {
 		this.userId = userId;
-	}
-
-	public List<MultipartFile> getImageFiles() {
-		return imageFiles;
-	}
-
-	public void setImageFiles(List<MultipartFile> imageFiles) {
-		this.imageFiles = imageFiles;
 	}
 
 	@Override

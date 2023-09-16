@@ -66,7 +66,7 @@ public class OrderService {
 						.collect(Collectors.toList());
 				List<Product> products = productRepository.findByIdIn(productIds);
 				OrderResponseDTO orderResponseDTO = OrderMapper.mapToOrderResponseDTO(order,
-						products.stream().map(p -> ProductMapper.mapToProductDTO(p)).collect(Collectors.toSet()));
+						products.stream().map(p -> ProductMapper.mapProductToProductResponseDTO(p)).collect(Collectors.toSet()));
 				list.add(orderResponseDTO);
 			}
 		} else {
@@ -96,7 +96,7 @@ public class OrderService {
 			List<Product> products = productRepository.findByIdIn(productIds);
 
 			OrderResponseDTO orderResponseDTO = OrderMapper.mapToOrderResponseDTO(newOrder,
-					products.stream().map(p -> ProductMapper.mapToProductDTO(p)).collect(Collectors.toSet()));
+					products.stream().map(p -> ProductMapper.mapProductToProductResponseDTO(p)).collect(Collectors.toSet()));
 
 			return orderResponseDTO;
 		}
@@ -112,7 +112,7 @@ public class OrderService {
 		List<Product> products = productRepository.findByIdIn(productIds);
 
 		OrderResponseDTO orderResponseDTO = OrderMapper.mapToOrderResponseDTO(order,
-				products.stream().map(p -> ProductMapper.mapToProductDTO(p)).collect(Collectors.toSet()));
+				products.stream().map(p -> ProductMapper.mapProductToProductResponseDTO(p)).collect(Collectors.toSet()));
 		return orderResponseDTO;
 	}
 
@@ -148,7 +148,7 @@ public class OrderService {
 			List<Product> products = productRepository.findByIdIn(productIds);
 
 			OrderResponseDTO orderResponseDTO = OrderMapper.mapToOrderResponseDTO(order,
-					products.stream().map(p -> ProductMapper.mapToProductDTO(p)).collect(Collectors.toSet()));
+					products.stream().map(p -> ProductMapper.mapProductToProductResponseDTO(p)).collect(Collectors.toSet()));
 			return orderResponseDTO;
 		}
 

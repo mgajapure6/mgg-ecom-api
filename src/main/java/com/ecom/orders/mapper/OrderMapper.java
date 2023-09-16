@@ -13,7 +13,7 @@ import com.ecom.orders.dto.OrderRequestDTO;
 import com.ecom.orders.dto.OrderResponseDTO;
 import com.ecom.orders.model.Order;
 import com.ecom.orders.model.OrderProduct;
-import com.ecom.product.dto.ProductDTO;
+import com.ecom.product.dto.ProductResponseDTO;
 
 @Service
 public class OrderMapper {
@@ -28,7 +28,7 @@ public class OrderMapper {
 		return order;
 	}
 
-	public static OrderResponseDTO mapToOrderResponseDTO(Order newOrder, Set<ProductDTO> products) {
+	public static OrderResponseDTO mapToOrderResponseDTO(Order newOrder, Set<ProductResponseDTO> products) {
 		OrderResponseDTO orderDTO = new OrderResponseDTO();
 		orderDTO.setId(newOrder.getId());
 		orderDTO.setOrderDate(newOrder.getOrderDate());

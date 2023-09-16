@@ -11,7 +11,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotBlank;
+
+import org.springframework.web.multipart.MultipartFile;
 
 import com.ecom.user.model.DateAudit;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -29,26 +32,33 @@ public class ProductPhoto extends DateAudit implements Serializable {
 	@Column(name = "title")
 	private String title;
 
-	@NotBlank
-	@Column(name = "url")
-	private String url;
-
-	@NotBlank
-	@Column(name = "thumbnail_url")
-	private String thumbnailUrl;
+	@Column(name = "image_name")
+	private String imageName;
+	
+	@Column(name = "thumbnail_image_name")
+	private String thumbnailImageName;
+	
+	@Column(name = "cover_image")
+	private Boolean coverImage;
 
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "product_id")
 	private Product product;
+	
+	@Transient
+	@JsonIgnore
+	private MultipartFile file;
+	
 
-	public ProductPhoto(Long id, String title, String url, String thumbnailUrl, Product product) {
+	public ProductPhoto(Long id, String title, String imageName, String thumbnailImageName, Boolean coverImage, Product product) {
 		super();
 		this.id = id;
 		this.title = title;
-		this.url = url;
-		this.thumbnailUrl = thumbnailUrl;
+		this.imageName = imageName;
+		this.thumbnailImageName = thumbnailImageName;
 		this.product = product;
+		this.coverImage = coverImage;
 	}
 
 	public ProductPhoto() {
@@ -71,20 +81,28 @@ public class ProductPhoto extends DateAudit implements Serializable {
 		this.title = title;
 	}
 
-	public String getUrl() {
-		return url;
+	public String getImageName() {
+		return imageName;
 	}
 
-	public void setUrl(String url) {
-		this.url = url;
+	public void setImageName(String imageName) {
+		this.imageName = imageName;
 	}
 
-	public String getThumbnailUrl() {
-		return thumbnailUrl;
+	public String getThumbnailImageName() {
+		return thumbnailImageName;
 	}
 
-	public void setThumbnailUrl(String thumbnailUrl) {
-		this.thumbnailUrl = thumbnailUrl;
+	public void setThumbnailImageName(String thumbnailImageName) {
+		this.thumbnailImageName = thumbnailImageName;
+	}
+
+	public Boolean getCoverImage() {
+		return coverImage;
+	}
+
+	public void setCoverImage(Boolean coverImage) {
+		this.coverImage = coverImage;
 	}
 
 	public Product getProduct() {
@@ -95,10 +113,14 @@ public class ProductPhoto extends DateAudit implements Serializable {
 		this.product = product;
 	}
 
-	@Override
-	public String toString() {
-		return "ProductPhoto [id=" + id + ", title=" + title + ", url=" + url + ", thumbnailUrl=" + thumbnailUrl
-				+ ", product=" + product + "]";
+	public MultipartFile getFile() {
+		return file;
 	}
+
+	public void setFile(MultipartFile file) {
+		this.file = file;
+	}
+	
+	
 
 }

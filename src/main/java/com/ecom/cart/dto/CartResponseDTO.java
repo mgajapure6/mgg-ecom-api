@@ -4,7 +4,7 @@ import java.util.Set;
 
 import javax.validation.constraints.NotNull;
 
-import com.ecom.product.dto.ProductDTO;
+import com.ecom.product.dto.ProductResponseDTO;
 
 public class CartResponseDTO {
 
@@ -12,12 +12,12 @@ public class CartResponseDTO {
 	private Long id;
 
 	@NotNull
-	private Set<ProductDTO> products;
+	private Set<ProductResponseDTO> products;
 
 	@NotNull
 	private Long userId;
 
-	public CartResponseDTO(@NotNull Long id, @NotNull Set<ProductDTO> products, @NotNull Long userId) {
+	public CartResponseDTO(@NotNull Long id, @NotNull Set<ProductResponseDTO> products, @NotNull Long userId) {
 		super();
 		this.id = id;
 		this.products = products;
@@ -36,11 +36,11 @@ public class CartResponseDTO {
 		this.id = id;
 	}
 
-	public Set<ProductDTO> getProducts() {
+	public Set<ProductResponseDTO> getProducts() {
 		return products;
 	}
 
-	public void setProducts(Set<ProductDTO> products) {
+	public void setProducts(Set<ProductResponseDTO> products) {
 		this.products = products;
 	}
 

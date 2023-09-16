@@ -1,6 +1,5 @@
 package com.ecom.product.service;
 
-import java.io.IOException;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -17,7 +16,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.ecom.app.exceptions.EcommApiException;
 import com.ecom.app.exceptions.ResourceNotFoundException;
@@ -30,9 +28,9 @@ import com.ecom.app.utils.AppMessages;
 import com.ecom.app.utils.AppUtil;
 import com.ecom.category.model.Category;
 import com.ecom.category.repository.CategoryRepository;
-import com.ecom.file.service.FileIdentityGenerator;
 import com.ecom.file.service.FileStorageService;
-import com.ecom.product.dto.ProductDTO;
+import com.ecom.product.dto.ProductRequestDTO;
+import com.ecom.product.dto.ProductResponseDTO;
 import com.ecom.product.mapper.ProductMapper;
 import com.ecom.product.model.Product;
 import com.ecom.product.model.ProductAttribute;
@@ -65,31 +63,35 @@ public class ProductService {
 	@Autowired
 	private FileStorageService fileStorageService;
 
-	public PagedResponse<Product> getAllProducts(Integer page, Integer size) {
+	public PagedResponse<ProductResponseDTO> getAllProducts(Integer page, Integer size) {
 		AppUtil.validatePageNumberAndSize(page, size);
 		Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, AppConstant.CREATED_AT);
 		Page<Product> products = productRepository.findAll(pageable);
-		List<Product> content = products.getNumberOfElements() == 0 ? Collections.emptyList() : products.getContent();
+		List<ProductResponseDTO> content = products.getNumberOfElements() == 0 ? Collections.emptyList()
+				: products.getContent().stream().map(p -> {
+					return ProductMapper.mapProductToProductResponseDTO(p);
+				}).collect(Collectors.toList());
 		return new PagedResponse<>(content, products.getNumber(), products.getSize(), products.getTotalElements(),
 				products.getTotalPages(), products.isLast());
 	}
 
-	public PagedResponse<ProductDTO> getProductsByCategory(Long categoryId, Integer page, Integer size) {
+	public PagedResponse<ProductResponseDTO> getProductsByCategory(Long categoryId, Integer page, Integer size) {
 		AppUtil.validatePageNumberAndSize(page, size);
 		Category category = categoryRepository.findById(categoryId)
 				.orElseThrow(() -> new ResourceNotFoundException(AppConstant.CATEGORY, AppConstant.ID, categoryId));
 
 		Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, AppConstant.CREATED_AT);
 		Page<Product> products = productRepository.findByCategory(category, pageable);
-		List<ProductDTO> content = products.getNumberOfElements() == 0 ? Collections.emptyList()
-				: products.getContent().stream().map(p -> ProductMapper.mapToProductDTO(p))
-						.collect(Collectors.toList());
+		List<ProductResponseDTO> content = products.getNumberOfElements() == 0 ? Collections.emptyList()
+				: products.getContent().stream().map(p -> {
+					return ProductMapper.mapProductToProductResponseDTO(p);
+				}).collect(Collectors.toList());
 
 		return new PagedResponse<>(content, products.getNumber(), products.getSize(), products.getTotalElements(),
 				products.getTotalPages(), products.isLast());
 	}
 
-	public PagedResponse<ProductDTO> getProductsByCategoryAndUser(Long categoryId, Long userId, Integer page,
+	public PagedResponse<ProductResponseDTO> getProductsByCategoryAndUser(Long categoryId, Long userId, Integer page,
 			Integer size) {
 		AppUtil.validatePageNumberAndSize(page, size);
 		User user = userRepository.findById(userId)
@@ -99,28 +101,31 @@ public class ProductService {
 
 		Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, AppConstant.CREATED_AT);
 		Page<Product> products = productRepository.findByCategoryAndUser(category, user, pageable);
-		List<ProductDTO> content = products.getNumberOfElements() == 0 ? Collections.emptyList()
-				: products.getContent().stream().map(p -> ProductMapper.mapToProductDTO(p))
+		List<ProductResponseDTO> content = products.getNumberOfElements() == 0 ? Collections.emptyList()
+				: products.getContent().stream().map(p -> ProductMapper.mapProductToProductResponseDTO(p))
 						.collect(Collectors.toList());
 
 		return new PagedResponse<>(content, products.getNumber(), products.getSize(), products.getTotalElements(),
 				products.getTotalPages(), products.isLast());
 	}
 
-	public PagedResponse<Product> getProductsByCreatedBy(String username, int page, int size) {
+	public PagedResponse<ProductResponseDTO> getProductsByCreatedBy(String username, int page, int size) {
 		AppUtil.validatePageNumberAndSize(page, size);
 		User user = userRepository.getUserByName(username);
 		Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, AppConstant.CREATED_AT);
 		Page<Product> products = productRepository.findByCreatedBy(user.getId(), pageable);
-		List<Product> content = products.getNumberOfElements() == 0 ? Collections.emptyList() : products.getContent();
+		List<ProductResponseDTO> content = products.getNumberOfElements() == 0 ? Collections.emptyList()
+				: products.getContent().stream().map(p -> ProductMapper.mapProductToProductResponseDTO(p))
+						.collect(Collectors.toList());
 
 		return new PagedResponse<>(content, products.getNumber(), products.getSize(), products.getTotalElements(),
 				products.getTotalPages(), products.isLast());
 	}
 
-	public ProductDTO addProduct(@Valid ProductDTO productRequest, UserPrincipal currentUser) {
+	public ProductResponseDTO addProduct(@Valid ProductRequestDTO productRequest, UserPrincipal currentUser) {
 		User user = userRepository.findById(currentUser.getId()).orElseThrow(
 				() -> new ResourceNotFoundException(AppConstant.USER, AppConstant.ID, currentUser.getId()));
+
 		Category category = categoryRepository.findById(productRequest.getCategoryId())
 				.orElseThrow(() -> new ResourceNotFoundException(AppConstant.CATEGORY, AppConstant.ID,
 						productRequest.getCategoryId()));
@@ -133,17 +138,6 @@ public class ProductService {
 			product.setCategory(category);
 			product = productRepository.save(product);
 
-			// upload images
-			if (!productRequest.getImageFiles().isEmpty()) {
-				try {
-					fileStorageService.storeAllFile(productRequest.getImageFiles(),
-							FileIdentityGenerator.productFileIdentity(product.getId()), ServletUriComponentsBuilder
-									.fromCurrentContextPath().path("/api/v1/products/download/").toUriString());
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-
 			for (ProductAttribute pa : product.getProdAttributes()) {
 				pa.setProduct(product);
 				productAttributeRepository.save(pa);
@@ -154,7 +148,23 @@ public class ProductService {
 				productPhotoRepository.save(pp);
 			}
 
-			ProductDTO productResponse = ProductMapper.mapToProductDTO(product);
+			// upload images
+			if (productRequest.getProdPhotos().size() > 0) {
+				for (ProductPhoto pp : product.getProdPhotos()) {
+					try {
+						fileStorageService.storeFile(pp.getFile(), AppConstant.PRODUCT.toLowerCase(), product.getId(),
+								pp.getImageName());
+						// String identity = AppConstant.PRODUCT.toLowerCase()+"_"+product.getId();
+						// String imageUrl =
+						// AppConstant.IMAGE_DOWNLOAD_BASE_URL+"/"+AppConstant.PRODUCT.toLowerCase()+"/"+identity+"/"+imageFilename;
+						// String thumbnailUrl = imageUrl;
+						// //AppConstant.IMAGE_DOWNLOAD_BASE_URL+"/"+AppConstant.PRODUCT.toLowerCase()+"/"+identity+"/"+thumbnailFilename;
+					} catch (Exception e) {
+					}
+				}
+			}
+
+			ProductResponseDTO productResponse = ProductMapper.mapProductToProductResponseDTO(product);
 			return productResponse;
 		}
 
@@ -162,16 +172,16 @@ public class ProductService {
 		throw new UnauthorizedException(apiResponse);
 	}
 
-	public ProductDTO getProduct(Long id) {
+	public ProductResponseDTO getProduct(Long id) {
 
 		Product product = productRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException(AppConstant.PRODUCT, AppConstant.ID, id));
-		ProductDTO productDTO = ProductMapper.mapToProductDTO(product);
-		return productDTO;
+		ProductResponseDTO productResponseDTO = ProductMapper.mapProductToProductResponseDTO(product);
+		return productResponseDTO;
 
 	}
 
-	public ProductDTO updateProduct(Long productId, ProductDTO newProductRequest, UserPrincipal currentUser) {
+	public ProductResponseDTO updateProduct(Long productId, ProductRequestDTO newProductRequest, UserPrincipal currentUser) {
 
 		if (productId != newProductRequest.getId()) {
 			throw new EcommApiException(HttpStatus.CONFLICT, "Product ID mismatch");
@@ -224,7 +234,7 @@ public class ProductService {
 
 			product = productRepository.save(product);
 
-			ProductDTO productResponse = ProductMapper.mapToProductDTO(product);
+			ProductResponseDTO productResponse = ProductMapper.mapProductToProductResponseDTO(product);
 			return productResponse;
 
 		}

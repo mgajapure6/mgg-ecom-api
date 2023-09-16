@@ -15,6 +15,6 @@ public interface FileStoreRepository extends JpaRepository<FileStore, Long>, Cru
 	
 	List<FileStore> findByFileIdentityIn(List<String> identites);
 
-	FileStore findByFileIdentityAndFileName(String identity, String fileName);
+	FileStore findByFileIdentityAndOriginalFileName(String identity, String originalFileName);
 
 }
